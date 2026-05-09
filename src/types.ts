@@ -17,13 +17,60 @@ export interface GateActivation {
   coloring: GateColoring;
 }
 
+/** Planetary activation — value is "gate.line" e.g. "40.4" */
+export interface Activations {
+  sun?: string;
+  earth?: string;
+  northNode?: string;
+  southNode?: string;
+  moon?: string;
+  mercury?: string;
+  venus?: string;
+  mars?: string;
+  jupiter?: string;
+  saturn?: string;
+  uranus?: string;
+  neptune?: string;
+  pluto?: string;
+}
+
 export interface ChartData {
-  /** Gates activated in this chart with their coloring */
-  gates: GateActivation[];
-  /** Which centers are defined (filled) */
-  definedCenters: CenterName[];
-  /** Active channel pairs, e.g. [[10,57],[18,58]] */
-  channels: [number, number][];
+  /**
+   * Gate activations — provide EITHER this array OR the three separate arrays below.
+   */
+  gates?: GateActivation[];
+
+  /** Personality (conscious) gate numbers */
+  personalityGates?: number[];
+  /** Design (unconscious) gate numbers */
+  designGates?: number[];
+  /** Gates active in both streams */
+  bothGates?: number[];
+
+  /**
+   * Which centers are defined (filled).
+   * Accepts both 'SolarPlexus' and 'Solar Plexus'.
+   */
+  definedCenters: string[];
+
+  /**
+   * Active channel pairs.
+   * Accepts string notation '10-57' or tuple [10, 57].
+   */
+  channels: (string | [number, number])[];
+
+  /** Optional chart metadata */
+  type?: string;
+  profile?: string;
+  definition?: string;
+  authority?: string;
+  strategy?: string;
+
+  /** Planetary activation columns (Design left, Personality right) */
+  activations?: {
+    design: Activations;
+    personality: Activations;
+  };
 }
 
 export interface Point {

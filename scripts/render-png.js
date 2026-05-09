@@ -38,6 +38,18 @@ const MAKSIM_CHART = {
     [37, 40],
     [9, 52],
   ],
+  activations: {
+    design: {
+      sun: '40.4', earth: '37.4', northNode: '30.2', southNode: '29.2',
+      moon: '6.2', mercury: '18.3', venus: '57.3', mars: '47.2',
+      jupiter: '52.3', saturn: '58.4', uranus: '10.4', neptune: '38.1', pluto: '44.6',
+    },
+    personality: {
+      sun: '9.2', earth: '16.2', northNode: '49.1', southNode: '4.1',
+      moon: '26.2', mercury: '26.1', venus: '61.2', mars: '1.5',
+      jupiter: '52.6', saturn: '38.3', uranus: '10.6', neptune: '38.2', pluto: '1.3',
+    },
+  },
 };
 
 async function main() {
@@ -77,12 +89,12 @@ async function main() {
 
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: 600, height: 820, deviceScaleFactor: 2 });
+    await page.setViewport({ width: 820, height: 650, deviceScaleFactor: 2 });
     await page.setContent(html, { waitUntil: 'domcontentloaded' });
 
     await page.screenshot({
       path: 'output/current.png',
-      clip: { x: 0, y: 0, width: 600, height: 820 },
+      clip: { x: 0, y: 0, width: 820, height: 650 },
       omitBackground: false,
     });
 

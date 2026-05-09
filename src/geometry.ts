@@ -1,225 +1,226 @@
 import type { CenterShape, GatePosition, ChannelPath } from './types';
 
-// ViewBox: 0 0 600 820
-export const VIEWBOX = { width: 600, height: 820 };
+// ViewBox: 0 0 820 800
+// Bodygraph center: x=410 (left col 0-130, bodygraph 130-690, right col 690-820)
+export const VIEWBOX = { width: 820, height: 650 };
+
+// Spine y-extents for background rendering
+// (the 7 parallel lines run from Head top to Root bottom; centers render over them)
+export const SPINE_Y = { top: 25, bottom: 545 };
 
 // ─── CENTER SHAPES ─────────────────────────────────────────────────────────────
-// type: 'pointed-diamond' = Head (teardrop/upward diamond with pointed top)
-//       'triangle' = Ajna (downward-pointing triangle)
-//       'rectangle' = Throat, Sacral, Root
-//       'diamond' = G Center (rotated square)
-//       'square' = Ego, SolarPlexus, Spleen
+// All cx values shifted +110 from previous layout (bodygraph center 300→410)
 
 export const CENTER_SHAPES: CenterShape[] = [
-  { name: 'Head',        type: 'pointed-diamond', cx: 300, cy: 55,  w: 70,  h: 60  },
-  { name: 'Ajna',        type: 'triangle',         cx: 300, cy: 135, w: 90,  h: 60  },
-  { name: 'Throat',      type: 'rectangle',        cx: 300, cy: 220, w: 130, h: 60  },
-  { name: 'G',           type: 'diamond',          cx: 300, cy: 315, w: 100, h: 100 },
-  { name: 'Ego',         type: 'square',           cx: 415, cy: 270, w: 70,  h: 70  },
-  { name: 'Sacral',      type: 'rectangle',        cx: 300, cy: 430, w: 130, h: 70  },
-  { name: 'SolarPlexus', type: 'square',           cx: 435, cy: 400, w: 90,  h: 90  },
-  { name: 'Spleen',      type: 'square',           cx: 165, cy: 400, w: 90,  h: 90  },
-  { name: 'Root',        type: 'rectangle',        cx: 300, cy: 520, w: 100, h: 50  },
+  { name: 'Head',        type: 'pointed-diamond', cx: 410, cy: 55,  w: 70,  h: 60  },
+  { name: 'Ajna',        type: 'triangle',         cx: 410, cy: 135, w: 90,  h: 60  },
+  { name: 'Throat',      type: 'rectangle',        cx: 410, cy: 220, w: 130, h: 60  },
+  { name: 'G',           type: 'diamond',          cx: 410, cy: 315, w: 100, h: 100 },
+  { name: 'Ego',         type: 'square',           cx: 525, cy: 270, w: 70,  h: 70  },
+  { name: 'Sacral',      type: 'rectangle',        cx: 410, cy: 430, w: 130, h: 70  },
+  { name: 'SolarPlexus', type: 'square',           cx: 545, cy: 400, w: 90,  h: 90  },
+  { name: 'Spleen',      type: 'square',           cx: 275, cy: 400, w: 90,  h: 90  },
+  { name: 'Root',        type: 'rectangle',        cx: 410, cy: 520, w: 100, h: 50  },
 ];
 
 // ─── GATE POSITIONS ────────────────────────────────────────────────────────────
-// Each gate badge positioned along its channel path
+// All x values shifted +110 from previous layout
 
 export const GATE_POSITIONS: GatePosition[] = [
   // Head center bottom → Ajna top  (Head-Ajna spine)
-  { gate: 64, x: 282, y: 88 },
-  { gate: 61, x: 300, y: 88 },
-  { gate: 63, x: 318, y: 88 },
+  { gate: 64, x: 392, y: 88 },
+  { gate: 61, x: 410, y: 88 },
+  { gate: 63, x: 428, y: 88 },
 
   // Ajna top (mirror of Head bottom)
-  { gate: 47, x: 282, y: 112 },
-  { gate: 24, x: 300, y: 112 },
-  { gate: 4,  x: 318, y: 112 },
+  { gate: 47, x: 392, y: 112 },
+  { gate: 24, x: 410, y: 112 },
+  { gate: 4,  x: 428, y: 112 },
 
   // Ajna bottom → Throat top
-  { gate: 17, x: 275, y: 162 },
-  { gate: 43, x: 300, y: 162 },
-  { gate: 23, x: 325, y: 162 },
+  { gate: 17, x: 385, y: 162 },
+  { gate: 43, x: 410, y: 162 },
+  { gate: 23, x: 435, y: 162 },
 
   // Throat top row
-  { gate: 62, x: 258, y: 195 },
-  { gate: 56, x: 275, y: 195 },
-  { gate: 35, x: 300, y: 195 },
-  { gate: 12, x: 325, y: 195 },
-  { gate: 45, x: 342, y: 195 },
+  { gate: 62, x: 368, y: 195 },
+  { gate: 56, x: 385, y: 195 },
+  { gate: 35, x: 410, y: 195 },
+  { gate: 12, x: 435, y: 195 },
+  { gate: 45, x: 452, y: 195 },
 
   // Throat bottom row
-  { gate: 31, x: 258, y: 213 },
-  { gate: 8,  x: 275, y: 213 },
-  { gate: 33, x: 300, y: 213 },
-  { gate: 20, x: 325, y: 213 },
+  { gate: 31, x: 368, y: 213 },
+  { gate: 8,  x: 385, y: 213 },
+  { gate: 33, x: 410, y: 213 },
+  { gate: 20, x: 435, y: 213 },
+  { gate: 16, x: 452, y: 213 },
 
   // Throat bottom → G top (Throat-G channel)
-  { gate: 7,  x: 282, y: 258 },
-  { gate: 1,  x: 300, y: 258 },
-  { gate: 13, x: 318, y: 258 },
+  { gate: 7,  x: 392, y: 258 },
+  { gate: 1,  x: 410, y: 258 },
+  { gate: 13, x: 428, y: 258 },
 
   // G center gates
-  { gate: 2,  x: 282, y: 310 },
-  { gate: 46, x: 300, y: 310 },
-  { gate: 15, x: 318, y: 310 },
+  { gate: 2,  x: 392, y: 310 },
+  { gate: 46, x: 410, y: 310 },
+  { gate: 15, x: 428, y: 310 },
 
   // G center bottom → Sacral top (G-Sacral)
-  { gate: 5,  x: 275, y: 375 },
-  { gate: 14, x: 300, y: 375 },
-  { gate: 29, x: 325, y: 375 },
+  { gate: 5,  x: 385, y: 375 },
+  { gate: 14, x: 410, y: 375 },
+  { gate: 29, x: 435, y: 375 },
 
   // Sacral top row
-  { gate: 34, x: 258, y: 415 },
-  { gate: 27, x: 275, y: 415 },
-  { gate: 59, x: 300, y: 415 },
-  { gate: 9,  x: 325, y: 415 },
-  { gate: 3,  x: 342, y: 415 },
+  { gate: 34, x: 368, y: 415 },
+  { gate: 27, x: 385, y: 415 },
+  { gate: 59, x: 410, y: 415 },
+  { gate: 9,  x: 435, y: 415 },
+  { gate: 3,  x: 452, y: 415 },
 
   // Sacral bottom row
-  { gate: 42, x: 270, y: 443 },
-  { gate: 53, x: 300, y: 443 },
-  { gate: 60, x: 330, y: 443 },
+  { gate: 42, x: 380, y: 443 },
+  { gate: 53, x: 410, y: 443 },
+  { gate: 60, x: 440, y: 443 },
 
   // Sacral bottom → Root (Sacral-Root)
-  { gate: 58, x: 262, y: 508 },
-  { gate: 38, x: 278, y: 508 },
-  { gate: 54, x: 294, y: 508 },
-  { gate: 53, x: 310, y: 508 }, // note: 53 appears twice in spec, keeping both
-  { gate: 19, x: 326, y: 508 },
-  { gate: 39, x: 342, y: 508 },
-  { gate: 41, x: 300, y: 555 },
+  { gate: 58, x: 372, y: 508 },
+  { gate: 38, x: 388, y: 508 },
+  { gate: 54, x: 404, y: 508 },
+  { gate: 19, x: 436, y: 508 },
+  { gate: 39, x: 452, y: 508 },
+  { gate: 41, x: 410, y: 555 },
 
-  // Root gates
-  { gate: 52, x: 300, y: 508 },
+  // Root center gate (and Sacral-Root spine gate)
+  { gate: 52, x: 410, y: 508 },
 
-  // Ego/Heart center (right side, gates positioned LEFT of Ego box boundary x=380)
-  { gate: 26, x: 368, y: 248 },
-  { gate: 51, x: 368, y: 268 },
-  { gate: 21, x: 368, y: 288 },
-  { gate: 40, x: 390, y: 322 },
+  // Ego/Heart center — gates to the LEFT of Ego left edge (x=490)
+  { gate: 26, x: 478, y: 248 },
+  { gate: 51, x: 478, y: 268 },
+  { gate: 21, x: 478, y: 288 },
+  { gate: 40, x: 500, y: 322 },
 
-  // Solar Plexus (right lower, gates RIGHT of SP center right edge x=455, canonical position)
-  { gate: 36, x: 472, y: 368 },
-  { gate: 22, x: 472, y: 383 },
-  { gate: 37, x: 472, y: 398 },
-  { gate: 6,  x: 472, y: 413 },
-  { gate: 49, x: 472, y: 428 },
-  { gate: 30, x: 472, y: 443 },
-  { gate: 55, x: 472, y: 458 },
+  // Solar Plexus — gates to the RIGHT of SP right edge (x=590)
+  { gate: 36, x: 582, y: 368 },
+  { gate: 22, x: 582, y: 383 },
+  { gate: 37, x: 582, y: 398 },
+  { gate: 6,  x: 582, y: 413 },
+  { gate: 49, x: 582, y: 428 },
+  { gate: 30, x: 582, y: 443 },
+  { gate: 55, x: 582, y: 458 },
 
-  // Spleen (left lower, gates LEFT of Spleen center left edge x=145, canonical position)
-  { gate: 48, x: 128, y: 368 },
-  { gate: 57, x: 128, y: 383 },
-  { gate: 44, x: 128, y: 398 },
-  { gate: 50, x: 128, y: 413 },
-  { gate: 32, x: 128, y: 428 },
-  { gate: 28, x: 128, y: 443 },
-  { gate: 18, x: 128, y: 458 },
+  // Spleen — gates to the LEFT of Spleen left edge (x=230)
+  { gate: 48, x: 238, y: 368 },
+  { gate: 57, x: 238, y: 383 },
+  { gate: 44, x: 238, y: 398 },
+  { gate: 50, x: 238, y: 413 },
+  { gate: 32, x: 238, y: 428 },
+  { gate: 28, x: 238, y: 443 },
+  { gate: 18, x: 238, y: 458 },
 
   // G center left port → Spleen (G-Spleen)
-  { gate: 10, x: 225, y: 335 },
-  { gate: 25, x: 220, y: 353 },
-
-  // Gate 16 belongs to Throat center (channel 16-48 Throat↔Spleen), right end of 2nd row
-  { gate: 16, x: 342, y: 213 },
+  { gate: 10, x: 335, y: 335 },
+  { gate: 25, x: 330, y: 353 },
 ];
 
 // ─── CHANNEL PATHS ─────────────────────────────────────────────────────────────
-// SVG path data for each channel pair
+// All x values shifted +110 from previous layout.
+// Each entry is one unique channel (no duplicate direction pairs).
 
 export const CHANNEL_PATHS: ChannelPath[] = [
-  // Spine channels (vertical)
+  // ── Spine channels (Head-Ajna) — multi-line parallel for visual rope effect
   {
     gates: [64, 47],
-    path: 'M 282,88 L 282,112 M 300,88 L 300,112 M 318,88 L 318,112',
+    path: 'M 392,88 L 392,112 M 410,88 L 410,112 M 428,88 L 428,112',
   },
   {
     gates: [61, 24],
-    path: 'M 300,88 L 300,112',
+    path: 'M 410,88 L 410,112',
   },
   {
     gates: [63, 4],
-    path: 'M 318,88 L 318,112',
+    path: 'M 428,88 L 428,112',
   },
+  // ── Spine channels (Ajna-Throat)
   {
     gates: [17, 62],
-    path: 'M 275,162 L 275,195',
+    path: 'M 385,162 L 385,195',
   },
   {
     gates: [43, 23],
-    path: 'M 300,162 L 300,195',
+    path: 'M 410,162 L 410,195',
   },
+  {
+    gates: [11, 56],
+    path: 'M 392,162 L 392,195',
+  },
+  // ── Cross-channel Throat-Spleen (20-57) — long arc left
   {
     gates: [20, 57],
-    // Throat→Spleen — wider arc going lower-left
-    path: 'M 325,250 C 300,285 230,300 185,320 C 150,338 130,362 152,390',
+    path: 'M 435,250 C 410,285 340,300 295,320 C 260,338 240,362 262,390',
   },
+  // ── Sacral↔Throat arc (34-20)
   {
     gates: [34, 20],
-    path: 'M 258,415 C 245,385 245,350 235,320 C 225,295 235,270 280,250 L 325,250',
+    path: 'M 368,415 C 355,385 355,350 345,320 C 335,295 345,270 390,250 L 435,250',
   },
+  // ── Spine channels (Throat-G) — two parallel lines
   {
     gates: [7, 31],
-    path: 'M 258,258 L 258,213 M 282,258 L 282,213',
+    path: 'M 368,258 L 368,213 M 392,258 L 392,213',
   },
-  // G→Throat (1-8 or 7-1 channel)
+  // ── Spine (G-Throat full) — three lines
   {
     gates: [7, 1],
-    path: 'M 282,258 L 282,310 M 300,258 L 300,310 M 318,258 L 318,310',
+    path: 'M 392,258 L 392,310 M 410,258 L 410,310 M 428,258 L 428,310',
   },
-  // G→Sacral (2-14, 46-29, 15-5)
+  // ── Spine (G-Sacral) — three lines
   {
     gates: [2, 14],
-    path: 'M 282,310 L 282,375 M 300,310 L 300,375 M 318,310 L 318,375',
+    path: 'M 392,310 L 392,375 M 410,310 L 410,375 M 428,310 L 428,375',
   },
-  // Sacral→Root spine
+  // ── Spine (Sacral-Root) — three lines
   {
     gates: [42, 53],
-    path: 'M 270,443 L 270,508 M 300,443 L 300,508 M 330,443 L 330,508',
+    path: 'M 380,443 L 380,508 M 410,443 L 410,508 M 440,443 L 440,508',
   },
-  // Root lateral
+  // ── Root-Spleen lateral arcs
   {
     gates: [38, 28],
-    path: 'M 128,443 C 88,468 92,508 278,508',
+    path: 'M 238,443 C 195,468 200,508 388,508',
   },
   {
     gates: [54, 32],
-    path: 'M 152,428 C 112,455 115,506 294,506',
+    path: 'M 262,428 C 220,455 223,506 404,506',
   },
-  // 10-57 (G↔Spleen): arc from G gate 10 (x=225,y=335) to Spleen gate 57 (x=128,y=383), wider left sweep
+  // ── 10-57 (G↔Spleen) — arc far left
   {
     gates: [10, 57],
-    path: 'M 225,335 C 185,320 100,330 128,383',
+    path: 'M 335,335 C 295,320 208,330 238,383',
   },
-  // 18-58 (Spleen↔Root): arc from Spleen gate 18 (x=128,y=458) to Root gate 58 (x=262,y=508), wider sweep
+  // ── 18-58 (Spleen↔Root) — sweep left and down
   {
     gates: [18, 58],
-    path: 'M 128,458 C 75,478 80,510 262,510',
+    path: 'M 238,458 C 182,478 188,510 372,510',
   },
-  // 26-44 (Ego↔Spleen): huge outer arc: Ego gate 26 (x=368,y=248) sweeps far RIGHT then DOWN and LEFT to Spleen gate 44 (x=128,y=398)
+  // ── 26-44 (Ego↔Spleen) — massive outer arc sweeping far right then left
   {
     gates: [26, 44],
-    path: 'M 368,248 C 520,190 575,380 520,455 C 480,510 380,515 280,505 C 210,495 160,465 128,398',
+    path: 'M 478,248 C 625,185 678,375 625,455 C 585,510 490,515 390,505 C 320,495 268,465 238,398',
   },
-  // 37-40 (SolarPlexus↔Ego): arc right side connecting SP gate 37 (x=472,y=398) to Ego gate 40 (x=390,y=322), wider right sweep
+  // ── 37-40 (SolarPlexus↔Ego) — right-side arc
   {
     gates: [37, 40],
-    path: 'M 472,398 C 555,375 550,305 390,322',
+    path: 'M 582,398 C 658,375 655,305 500,322',
   },
-  // 9-52 (Sacral↔Root): vertical path slightly right of center spine
+  // ── 9-52 (Sacral↔Root) — slightly right of center spine
   {
     gates: [9, 52],
-    path: 'M 325,415 L 325,510',
+    path: 'M 435,415 L 435,510',
   },
-  // 16-48 (Throat↔Spleen): long arc from gate 16 (x=342,y=213) sweeping left down to gate 48 (x=128,y=368)
+  // ── 16-48 (Throat↔Spleen) — long arc from Throat right down to Spleen
   {
     gates: [16, 48],
-    path: 'M 342,213 C 290,240 140,290 128,368',
-  },
-  // 11-56 (Ajna↔Throat)
-  {
-    gates: [11, 56],
-    path: 'M 275,162 L 275,195',
+    path: 'M 452,213 C 398,240 248,290 238,368',
   },
 ];
