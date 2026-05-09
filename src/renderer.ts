@@ -96,9 +96,10 @@ function isChannelActive(gates: [number, number], chart: NormalizedChart): boole
 // Centers render on top, masking the interior; the lines appear between centers.
 
 function renderSpine(): string {
-  const numLines = 7;
+  const numLines = 8;
   const spacing = 4;
-  const startX = 410 - Math.floor(numLines / 2) * spacing; // 410 - 12 = 398
+  // Center 8 lines at x=410: startX = 410 - (numLines-1)/2 * spacing = 410 - 14 = 396
+  const startX = 410 - ((numLines - 1) / 2) * spacing; // 396
   const { top, bottom } = SPINE_Y;
   const lines: string[] = [];
   for (let i = 0; i < numLines; i++) {
@@ -120,10 +121,12 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
 
   switch (shape.type) {
     case 'pointed-diamond': {
-      // Head: kite/arrowhead — pointed top AND bottom, widest at 30% from bottom
+      // Head: Gothic arch / inverted-teardrop — sharp point at top, curved sides, rounded base
       const hw = w / 2;
       const hh = h / 2;
-      return `<polygon points="${cx},${cy - hh} ${cx + hw},${cy + hh * 0.3} ${cx},${cy + hh} ${cx - hw},${cy + hh * 0.3}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+      const t = cy - hh; // top point y
+      const b = cy + hh; // base y
+      return `<path d="M ${cx},${t} C ${cx + hw * 0.65},${t} ${cx + hw},${cy - hh * 0.25} ${cx + hw},${cy + hh * 0.25} Q ${cx + hw * 0.55},${b} ${cx},${b} Q ${cx - hw * 0.55},${b} ${cx - hw},${cy + hh * 0.25} C ${cx - hw},${cy - hh * 0.25} ${cx - hw * 0.65},${t} ${cx},${t} Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
     }
     case 'triangle': {
       const hw = w / 2;
@@ -295,20 +298,15 @@ export function renderToSVG(chartData: ChartData): string {
   parts.push(`<rect width="${width}" height="${height}" fill="${COLORS.background}"/>`);
 
   // ── Body silhouette (centered at x=410, spans Head-to-Root)
+  // Narrower at neck/shoulders, wide at chest, narrower at waist, wider at hips
   parts.push(
-    `<path d="M 410,15 C 460,15 495,65 505,115 C 518,170 528,230 532,285 C 538,335 542,382 538,420 C 532,465 512,510 480,538 C 458,556 436,566 410,566 C 384,566 362,556 340,538 C 308,510 288,465 282,420 C 278,382 282,335 288,285 C 292,230 302,170 315,115 C 325,65 360,15 410,15 Z" fill="#e8d5c0" opacity="0.3"/>`
+    `<path d="M 410,45 C 385,45 355,72 345,108 C 332,155 327,203 320,250 C 310,298 280,330 268,374 C 256,418 270,460 292,492 C 312,522 358,540 410,542 C 462,540 508,522 528,492 C 550,460 564,418 552,374 C 540,330 510,298 500,250 C 493,203 488,155 475,108 C 465,72 435,45 410,45 Z" fill="#f0e4d0" opacity="0.3"/>`
   );
 
   // ── Multi-line spine background
   parts.push(renderSpine());
 
-  // ── Channels (inactive/dashed — drawn first, under gates and centers)
-  for (const cp of CHANNEL_PATHS) {
-    if (!isChannelActive(cp.gates, chart)) {
-      parts.push(renderChannel(cp.path, false));
-    }
-  }
-  // ── Active channels on top (solid, layered shadow+main)
+  // ── Active channels only (solid, layered shadow+main — no dashes for inactive)
   for (const cp of CHANNEL_PATHS) {
     if (isChannelActive(cp.gates, chart)) {
       parts.push(renderChannel(cp.path, true));
