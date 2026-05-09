@@ -89,7 +89,7 @@ export const GATE_POSITIONS: GatePosition[] = [
   { gate: 54, x: 404, y: 508 },
   { gate: 19, x: 436, y: 508 },
   { gate: 39, x: 452, y: 508 },
-  { gate: 41, x: 410, y: 555 },
+  { gate: 41, x: 420, y: 527 },
 
   // Root center gate (and Sacral-Root spine gate)
   { gate: 52, x: 410, y: 508 },
