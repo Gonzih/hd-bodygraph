@@ -249,7 +249,7 @@ function renderChannel(path: string, active: boolean): string {
 
 const PLANETS: { key: keyof Activations; symbol: string }[] = [
   { key: 'sun',       symbol: '☉' },
-  { key: 'earth',     symbol: '⊕' },
+  { key: 'earth',     symbol: '♁' },
   { key: 'northNode', symbol: '☊' },
   { key: 'southNode', symbol: '☋' },
   { key: 'moon',      symbol: '☽' },

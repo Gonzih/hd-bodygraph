@@ -6,9 +6,9 @@
   "centers": {
     "Head": {
       "cx_pct": 50,
-      "cy_pct": 8.5,
-      "w_pct": 8.5,
-      "h_pct": 9.2
+      "cy_pct": 9.2,
+      "w_pct": 11,
+      "h_pct": 16
     },
     "Ajna": {
       "cx_pct": 50,
@@ -257,7 +257,7 @@
     },
     "41": {
       "cx_pct": 50,
-      "cy_pct": 85.4,
+      "cy_pct": 80.8,
       "coloring": "inactive"
     },
     "42": {
