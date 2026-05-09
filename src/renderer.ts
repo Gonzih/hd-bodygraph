@@ -4,8 +4,8 @@ import { CENTER_SHAPES, GATE_POSITIONS, CHANNEL_PATHS, VIEWBOX, SPINE_Y } from '
 // ─── COLORS ────────────────────────────────────────────────────────────────────
 const COLORS = {
   background: '#f5ead8',
-  definedCenter: '#c8a882',
-  undefinedCenter: '#ede0cc',
+  definedCenter: '#C9956A',
+  undefinedCenterStroke: '#9e8570',
   centerStroke: '#5a3e28',
   centerStrokeWidth: 2.5,
   // Gate pills
@@ -114,9 +114,9 @@ function renderSpine(): string {
 // ─── CENTER SVG GENERATORS ─────────────────────────────────────────────────────
 
 function renderCenter(shape: CenterShape, defined: boolean): string {
-  const fill = defined ? COLORS.definedCenter : COLORS.undefinedCenter;
-  const stroke = COLORS.centerStroke;
-  const sw = COLORS.centerStrokeWidth;
+  const fill = defined ? COLORS.definedCenter : 'none';
+  const stroke = defined ? COLORS.centerStroke : COLORS.undefinedCenterStroke;
+  const sw = defined ? COLORS.centerStrokeWidth : 1.5;
   const { cx, cy, w, h } = shape;
 
   switch (shape.type) {
@@ -325,7 +325,7 @@ export function renderToSVG(chartData: ChartData): string {
 
   // ── Body silhouette (human torso outline)
   parts.push(
-    `<path d="M 410,25 C 375,25 335,55 315,95 C 290,145 285,200 265,260 C 240,325 150,375 140,445 C 130,515 165,585 195,630 C 225,670 270,700 310,715 L 410,720 L 510,715 C 550,700 595,670 625,630 C 655,585 690,515 680,445 C 670,375 580,325 555,260 C 535,200 530,145 505,95 C 485,55 445,25 410,25 Z" fill="#f0e0c8" opacity="0.25"/>`
+    `<path d="M 410,25 C 375,25 335,55 315,95 C 290,145 285,200 265,260 C 240,325 130,375 120,445 C 110,515 145,585 175,630 C 210,670 262,700 300,715 L 410,720 L 520,715 C 558,700 610,670 645,630 C 665,585 710,515 700,445 C 690,375 590,325 555,260 C 535,200 530,145 505,95 C 485,55 445,25 410,25 Z" fill="#f0e0c8" opacity="0.25"/>`
   );
 
   // ── Multi-line spine background (6 lines, x=[400…420])

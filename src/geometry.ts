@@ -32,10 +32,10 @@ export const CENTER_SHAPES: CenterShape[] = [
   { name: 'Ego',         type: 'diamond',         cx: 525, cy: 374, w:  80, h:  97 },
   // rect: ref cy = 66.2% of 900 = 596; ref w = 15.9% of 820 = 130
   { name: 'Sacral',      type: 'rectangle',       cx: 410, cy: 596, w: 130, h:  75 },
-  // triangle-left: ref cx = 66.5% of 820 = 545; ref cy = 61.5% of 900 = 554
-  { name: 'SolarPlexus', type: 'triangle-left',  cx: 545, cy: 554, w: 110, h: 120 },
-  // triangle-right: ref cx = 33.5% of 820 = 275; ref cy = 61.5% of 900 = 554
-  { name: 'Spleen',      type: 'triangle-right', cx: 275, cy: 554, w: 110, h: 120 },
+  // triangle-left: large — right flat edge at 676, left tip at 536; top-bottom span 442..598
+  { name: 'SolarPlexus', type: 'triangle-left',  cx: 620, cy: 520, w: 140, h: 155 },
+  // triangle-right: large — left flat edge at 144, right tip at 284; top-bottom span 442..598
+  { name: 'Spleen',      type: 'triangle-right', cx: 200, cy: 520, w: 140, h: 155 },
   // rect: ref cy = 80% of 900 = 720; ref w = 12.2% of 820 = 100
   { name: 'Root',        type: 'rectangle',       cx: 410, cy: 720, w: 100, h:  65 },
 ];
@@ -110,25 +110,27 @@ export const GATE_POSITIONS: GatePosition[] = [
   { gate: 53, x: 410, y: 614 },
   { gate: 60, x: 440, y: 614 },
 
-  // ── SOLAR PLEXUS (triangle-left, cx=545, cy=554) ──
-  // Right edge of triangle at cx+w*0.4=589; gates outside right edge
-  { gate: 36, x: 582, y: 509 },  // 71% x, 56.6% y
-  { gate: 22, x: 582, y: 530 },  // 71% x, 58.9% y
-  { gate: 37, x: 582, y: 551 },  // 71% x, 61.2% y
-  { gate:  6, x: 582, y: 572 },  // 71% x, 63.5% y
-  { gate: 49, x: 582, y: 592 },  // 71% x, 65.8% y
-  { gate: 30, x: 582, y: 614 },  // 71% x, 68.2% y
-  { gate: 55, x: 582, y: 635 },  // 71% x, 70.5% y
+  // ── SOLAR PLEXUS (triangle-left, cx=620, cy=520, w=140, h=155) ──
+  // Right flat edge at cx+w*0.4=676; gates just inside at x=668
+  // Triangle spans y=442.5..597.5; 7 gates y=462..570 spacing 18
+  { gate: 36, x: 668, y: 462 },
+  { gate: 22, x: 668, y: 480 },
+  { gate: 37, x: 668, y: 498 },
+  { gate:  6, x: 668, y: 516 },
+  { gate: 49, x: 668, y: 534 },
+  { gate: 30, x: 668, y: 552 },
+  { gate: 55, x: 668, y: 570 },
 
-  // ── SPLEEN (triangle-right, cx=275, cy=554) ──
-  // Left edge of triangle at cx-w*0.4=231; gates outside left edge
-  { gate: 48, x: 238, y: 509 },  // 29% x, 56.6% y
-  { gate: 57, x: 238, y: 530 },  // 29% x, 58.9% y
-  { gate: 44, x: 238, y: 551 },  // 29% x, 61.2% y
-  { gate: 50, x: 238, y: 572 },  // 29% x, 63.5% y
-  { gate: 32, x: 238, y: 592 },  // 29% x, 65.8% y
-  { gate: 28, x: 238, y: 614 },  // 29% x, 68.2% y
-  { gate: 18, x: 238, y: 635 },  // 29% x, 70.5% y
+  // ── SPLEEN (triangle-right, cx=200, cy=520, w=140, h=155) ──
+  // Left flat edge at cx-w*0.4=144; gates just inside at x=152
+  // Triangle spans y=442.5..597.5; 7 gates y=462..570 spacing 18
+  { gate: 48, x: 152, y: 462 },
+  { gate: 57, x: 152, y: 480 },
+  { gate: 44, x: 152, y: 498 },
+  { gate: 50, x: 152, y: 516 },
+  { gate: 32, x: 152, y: 534 },
+  { gate: 28, x: 152, y: 552 },
+  { gate: 18, x: 152, y: 570 },
 
   // ── ROOT top row (y≈704 = 78.2% of 900) — Sacral gate pairs ──
   { gate: 58, x: 372, y: 704 },  // 45.4% x
@@ -138,8 +140,8 @@ export const GATE_POSITIONS: GatePosition[] = [
   { gate: 19, x: 436, y: 704 },  // 53.2% x
   { gate: 39, x: 452, y: 704 },  // 55.1% x
 
-  // ── ROOT bottom / below Root ──
-  { gate: 41, x: 410, y: 769 },  // 50% x, 85.4% y — below Root
+  // ── ROOT center (inside ROOT rect y=688..752) ──
+  { gate: 41, x: 410, y: 730 },  // 50% x, inside ROOT — connects to Solar Plexus gate 30
 ];
 
 // ─── CHANNEL PATHS ─────────────────────────────────────────────────────────────
@@ -165,12 +167,12 @@ export const CHANNEL_PATHS: ChannelPath[] = [
   { gates: [34, 20], path: 'M 368,574 C 345,490 370,400 435,295' },
 
   // ── THROAT ↔ SPLEEN (2 channels) ────────────────────────────────────────────
-  { gates: [16, 48], path: 'M 452,295 C 385,348 300,420 238,509' },
-  { gates: [20, 57], path: 'M 435,295 C 368,355 290,428 238,530' },
+  { gates: [16, 48], path: 'M 452,295 C 330,350 230,410 152,462' },
+  { gates: [20, 57], path: 'M 435,295 C 320,360 240,430 152,480' },
 
   // ── THROAT ↔ SOLAR PLEXUS (2 channels) ──────────────────────────────────────
-  { gates: [12, 22], path: 'M 435,270 C 496,270 550,360 582,530' },
-  { gates: [35, 36], path: 'M 410,270 C 475,268 535,355 582,509' },
+  { gates: [12, 22], path: 'M 435,270 C 540,290 640,400 668,480' },
+  { gates: [35, 36], path: 'M 410,270 C 520,280 620,380 668,462' },
 
   // ── THROAT ↔ EGO (1 channel) ────────────────────────────────────────────────
   { gates: [45, 21], path: 'M 452,270 C 464,296 470,340 478,399' },
@@ -184,33 +186,33 @@ export const CHANNEL_PATHS: ChannelPath[] = [
   { gates: [25, 51], path: 'M 330,489 C 370,460 424,432 478,371' },
 
   // ── G CENTER ↔ SPLEEN (1 channel) ───────────────────────────────────────────
-  { gates: [10, 57], path: 'M 335,464 C 294,482 260,506 238,530' },
+  { gates: [10, 57], path: 'M 335,464 C 265,467 205,472 152,480' },
 
-  // ── EGO ↔ SPLEEN (1 channel — massive outer arc) ────────────────────────────
-  { gates: [26, 44], path: 'M 478,344 C 580,600 80,620 238,551' },
+  // ── EGO ↔ SPLEEN (1 channel — massive outer arc sweeping right then far left) ─
+  { gates: [26, 44], path: 'M 478,344 C 600,500 290,710 152,498' },
 
   // ── EGO ↔ SOLAR PLEXUS (1 channel — right-side arc) ─────────────────────────
-  { gates: [37, 40], path: 'M 582,551 C 720,580 720,440 500,446' },
+  { gates: [37, 40], path: 'M 668,498 C 750,510 740,440 500,446' },
 
   // ── SACRAL ↔ SOLAR PLEXUS (1 channel) ───────────────────────────────────────
-  { gates: [ 6, 59], path: 'M 582,572 C 554,572 490,574 410,574' },
+  { gates: [ 6, 59], path: 'M 668,516 C 610,550 530,562 410,574' },
 
   // ── SACRAL ↔ SPLEEN (2 channels) ────────────────────────────────────────────
-  { gates: [27, 50], path: 'M 385,574 C 322,573 280,572 238,572' },
-  { gates: [34, 57], path: 'M 368,574 C 310,562 268,546 238,530' },
+  { gates: [27, 50], path: 'M 385,574 C 295,558 220,538 152,516' },
+  { gates: [34, 57], path: 'M 368,574 C 270,545 205,510 152,480' },
 
   // ── SACRAL ↔ ROOT (3 channels) ──────────────────────────────────────────────
   { gates: [ 9, 52], path: 'M 435,574 C 428,618 420,665 410,704' },
   { gates: [42, 53], path: 'M 380,614 L 410,614' },
   { gates: [ 3, 60], path: 'M 452,574 C 448,592 444,604 440,614' },
 
-  // ── SPLEEN ↔ ROOT (3 channels — outer left arcs) ────────────────────────────
-  { gates: [18, 58], path: 'M 238,635 C 130,655 110,700 372,704' },
-  { gates: [28, 38], path: 'M 238,614 C 115,632 118,695 388,704' },
-  { gates: [32, 54], path: 'M 238,592 C 125,612 126,690 404,704' },
+  // ── SPLEEN ↔ ROOT (3 channels — massive outer left arcs) ─────────────────────
+  { gates: [18, 58], path: 'M 152,570 C 50,600 40,690 372,704' },
+  { gates: [28, 38], path: 'M 152,552 C 70,590 75,685 388,704' },
+  { gates: [32, 54], path: 'M 152,534 C 90,580 100,675 404,704' },
 
   // ── ROOT ↔ SOLAR PLEXUS (3 channels — outer right arcs) ─────────────────────
-  { gates: [19, 49], path: 'M 436,704 C 498,695 548,660 582,592' },
-  { gates: [39, 55], path: 'M 452,704 C 510,698 552,674 582,635' },
-  { gates: [41, 30], path: 'M 410,769 C 500,756 570,700 582,614' },
+  { gates: [19, 49], path: 'M 436,704 C 530,695 630,650 668,534' },
+  { gates: [39, 55], path: 'M 452,704 C 548,700 640,660 668,570' },
+  { gates: [41, 30], path: 'M 410,730 C 510,720 620,680 668,552' },
 ];
