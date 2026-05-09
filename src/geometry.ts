@@ -88,7 +88,7 @@ export const GATE_POSITIONS: GatePosition[] = [
   { gate: 53, x: 310, y: 508 }, // note: 53 appears twice in spec, keeping both
   { gate: 19, x: 326, y: 508 },
   { gate: 39, x: 342, y: 508 },
-  { gate: 41, x: 300, y: 555 },
+  { gate: 41, x: 300, y: 540 },
 
   // Root gates
   { gate: 52, x: 300, y: 508 },
@@ -187,25 +187,25 @@ export const CHANNEL_PATHS: ChannelPath[] = [
     gates: [54, 32],
     path: 'M 152,428 C 112,455 115,506 294,506',
   },
-  // 10-57 (G↔Spleen): arc from G gate 10 (x=225,y=335) to Spleen gate 57 (x=128,y=383), wider left sweep
+  // 10-57 (G↔Spleen): arc from G gate 10 (x=225,y=335) to Spleen gate 57 (x=128,y=383), smooth left sweep
   {
     gates: [10, 57],
-    path: 'M 225,335 C 185,320 100,330 128,383',
+    path: 'M 225,335 C 175,318 92,328 128,383',
   },
-  // 18-58 (Spleen↔Root): arc from Spleen gate 18 (x=128,y=458) to Root gate 58 (x=262,y=508), wider sweep
+  // 18-58 (Spleen↔Root): arc from Spleen gate 18 (x=128,y=458) to Root gate 58 (x=262,y=508), wide left sweep
   {
     gates: [18, 58],
-    path: 'M 128,458 C 75,478 80,510 262,510',
+    path: 'M 128,458 C 62,478 66,514 262,510',
   },
   // 26-44 (Ego↔Spleen): huge outer arc: Ego gate 26 (x=368,y=248) sweeps far RIGHT then DOWN and LEFT to Spleen gate 44 (x=128,y=398)
   {
     gates: [26, 44],
-    path: 'M 368,248 C 520,190 575,380 520,455 C 480,510 380,515 280,505 C 210,495 160,465 128,398',
+    path: 'M 368,248 C 530,185 582,385 525,458 C 488,512 382,516 278,506 C 208,496 158,466 128,398',
   },
-  // 37-40 (SolarPlexus↔Ego): arc right side connecting SP gate 37 (x=472,y=398) to Ego gate 40 (x=390,y=322), wider right sweep
+  // 37-40 (SolarPlexus↔Ego): arc right side connecting SP gate 37 (x=472,y=398) to Ego gate 40 (x=390,y=322), smooth right sweep
   {
     gates: [37, 40],
-    path: 'M 472,398 C 555,375 550,305 390,322',
+    path: 'M 472,398 C 568,372 564,298 390,322',
   },
   // 9-52 (Sacral↔Root): vertical path slightly right of center spine
   {

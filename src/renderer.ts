@@ -19,9 +19,6 @@ const COLORS = {
   // Channels
   definedChannelStroke: '#3a2810',
   definedChannelWidth: 5,
-  potentialChannelStroke: '#bbbbbb',
-  potentialChannelWidth: 1.5,
-  potentialChannelDash: '5,4',
 };
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────────
@@ -53,13 +50,11 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
 
   switch (shape.type) {
     case 'pointed-diamond': {
-      // Head: tall diamond with pointed top, wider bottom — like a raindrop
       const hw = w / 2;
       const hh = h / 2;
       return `<polygon points="${cx},${cy - hh} ${cx + hw},${cy + hh * 0.3} ${cx},${cy + hh} ${cx - hw},${cy + hh * 0.3}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
     }
     case 'triangle': {
-      // Ajna: downward-pointing triangle
       const hw = w / 2;
       const hh = h / 2;
       return `<polygon points="${cx - hw},${cy - hh} ${cx + hw},${cy - hh} ${cx},${cy + hh}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
@@ -68,7 +63,6 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
       return `<rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="4"/>`;
     }
     case 'diamond': {
-      // G Center: rotated square (diamond)
       const hw = w / 2;
       const hh = h / 2;
       return `<polygon points="${cx},${cy - hh} ${cx + hw},${cy} ${cx},${cy + hh} ${cx - hw},${cy}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
@@ -80,6 +74,18 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
 }
 
 function centerLabel(shape: CenterShape): string {
+  const { cx, cy } = shape;
+  const stroke = COLORS.centerStroke;
+  const font = `font-family="Arial,sans-serif" font-weight="bold" fill="${stroke}" opacity="0.85"`;
+
+  // Centers with two-line labels
+  if (shape.name === 'SolarPlexus') {
+    return `<text text-anchor="middle" ${font} font-size="9">
+      <tspan x="${cx}" y="${cy - 5}">SOLAR</tspan>
+      <tspan x="${cx}" dy="11">PLEXUS</tspan>
+    </text>`;
+  }
+
   const labels: Record<string, string> = {
     Head: 'HEAD',
     Ajna: 'AJNA',
@@ -87,20 +93,21 @@ function centerLabel(shape: CenterShape): string {
     G: 'G',
     Ego: 'EGO',
     Sacral: 'SACRAL',
-    SolarPlexus: 'SP',
-    Spleen: 'SPLN',
+    Spleen: 'SPLEEN',
     Root: 'ROOT',
   };
-  // For centers with gate pills inside them, shift label to avoid overlap
+
+  // y-offset to avoid gate pills inside the center
   const labelYOffset: Record<string, number> = {
-    Sacral: 28,   // shift down toward bottom, below top gate row at y=415
-    Root: 7,      // center between gate row at y=508 and gate 41 at y=543
-    Throat: 18,   // shift down below gate rows at y=195,213
-    G: 8,         // slight offset
+    Sacral: 28,
+    Root: 7,
+    Throat: 18,
+    G: 8,
   };
+
   const label = labels[shape.name] ?? shape.name;
   const yOff = labelYOffset[shape.name] ?? 4;
-  return `<text x="${shape.cx}" y="${shape.cy + yOff}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="${COLORS.centerStroke}" opacity="0.85">${label}</text>`;
+  return `<text x="${cx}" y="${cy + yOff}" text-anchor="middle" dominant-baseline="middle" ${font} font-size="10">${label}</text>`;
 }
 
 // ─── GATE PILL RENDERER ────────────────────────────────────────────────────────
@@ -139,11 +146,8 @@ function renderGatePill(gate: number, x: number, y: number, coloring: GateColori
 
 // ─── CHANNEL RENDERER ──────────────────────────────────────────────────────────
 
-function renderChannel(path: string, active: boolean): string {
-  if (active) {
-    return `<path d="${path}" fill="none" stroke="${COLORS.definedChannelStroke}" stroke-width="${COLORS.definedChannelWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }
-  return `<path d="${path}" fill="none" stroke="${COLORS.potentialChannelStroke}" stroke-width="${COLORS.potentialChannelWidth}" stroke-dasharray="${COLORS.potentialChannelDash}" stroke-linecap="round"/>`;
+function renderChannel(path: string): string {
+  return `<path d="${path}" fill="none" stroke="${COLORS.definedChannelStroke}" stroke-width="${COLORS.definedChannelWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
 // ─── MAIN SVG RENDERER ─────────────────────────────────────────────────────────
@@ -155,24 +159,15 @@ export function renderToSVG(chartData: ChartData): string {
   // Background
   parts.push(`<rect width="${width}" height="${height}" fill="${COLORS.background}"/>`);
 
-  // ── Body silhouette — filled warm teardrop behind all elements ──
-  // Spans from head (y≈15) to below root (y≈570), widest at Sacral/G level
-  parts.push(`<path d="M 300,15 C 350,15 385,65 395,115 C 408,170 418,230 422,285 C 428,335 432,382 428,420 C 422,465 402,510 370,538 C 348,556 326,566 300,566 C 274,566 252,556 230,538 C 198,510 178,465 172,420 C 168,382 172,335 178,285 C 182,230 192,170 205,115 C 215,65 250,15 300,15 Z" fill="#e8d5c0" opacity="0.3"/>`);
+  // ── Body silhouette — wide teardrop behind all elements ──
+  // Widest at Sacral level (~y=430-470), comfortably wrapping side centers.
+  // Left edge ≈ x=84, right edge ≈ x=516 at widest point.
+  parts.push(`<path d="M 300,25 C 375,25 505,110 516,340 C 524,450 500,535 440,565 C 400,582 355,588 300,590 C 245,588 200,582 160,565 C 100,535 76,450 84,340 C 95,110 225,25 300,25 Z" fill="#e8d5c0" opacity="0.25"/>`);
 
-  // ── Channels (draw first, under gates and centers) ──
-  // Potential channels (all defined channel paths as dashed gray)
+  // ── Active channels only (no inactive dashes — visual noise) ──
   for (const cp of CHANNEL_PATHS) {
-    const active = isChannelActive(cp.gates, chartData);
-    // Render all as potential first (avoid duplicates via Set)
-    if (!active) {
-      parts.push(renderChannel(cp.path, false));
-    }
-  }
-  // Active channels on top (solid, thick)
-  for (const cp of CHANNEL_PATHS) {
-    const active = isChannelActive(cp.gates, chartData);
-    if (active) {
-      parts.push(renderChannel(cp.path, true));
+    if (isChannelActive(cp.gates, chartData)) {
+      parts.push(renderChannel(cp.path));
     }
   }
 
@@ -184,7 +179,7 @@ export function renderToSVG(chartData: ChartData): string {
   }
 
   // ── Gate pills ──
-  // Deduplicate gate positions by gate number (some gates appear twice in spec)
+  // Deduplicate gate positions by gate number
   const seen = new Set<number>();
   for (const gp of GATE_POSITIONS) {
     if (seen.has(gp.gate)) continue;
