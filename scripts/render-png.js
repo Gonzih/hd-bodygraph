@@ -77,12 +77,12 @@ async function main() {
 
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: 600, height: 780, deviceScaleFactor: 2 });
+    await page.setViewport({ width: 600, height: 820, deviceScaleFactor: 2 });
     await page.setContent(html, { waitUntil: 'domcontentloaded' });
 
     await page.screenshot({
       path: 'output/current.png',
-      clip: { x: 0, y: 0, width: 600, height: 780 },
+      clip: { x: 0, y: 0, width: 600, height: 820 },
       omitBackground: false,
     });
 

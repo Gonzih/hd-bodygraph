@@ -94,7 +94,7 @@ function centerLabel(shape: CenterShape): string {
   // For centers with gate pills inside them, shift label to avoid overlap
   const labelYOffset: Record<string, number> = {
     Sacral: 28,   // shift down toward bottom, below top gate row at y=415
-    Root: 18,     // shift down below gate row at y=508
+    Root: 7,      // center between gate row at y=508 and gate 41 at y=543
     Throat: 18,   // shift down below gate rows at y=195,213
     G: 8,         // slight offset
   };
@@ -155,11 +155,9 @@ export function renderToSVG(chartData: ChartData): string {
   // Background
   parts.push(`<rect width="${width}" height="${height}" fill="${COLORS.background}"/>`);
 
-  // ── Body silhouette outline ──
-  // Left side body outline: Ajna left → Throat left → G left → Sacral left → Root left
-  parts.push(`<path d="M 255,105 L 235,190 L 235,250 C 235,280 250,295 250,315 L 235,395 L 235,465 L 250,510" fill="none" stroke="#b8a090" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>`);
-  // Right side body outline
-  parts.push(`<path d="M 345,105 L 365,190 L 365,250 C 365,280 350,295 350,315 L 365,395 L 365,465 L 350,510" fill="none" stroke="#b8a090" stroke-width="1.2" stroke-dasharray="5,4" opacity="0.35"/>`);
+  // ── Body silhouette — filled warm teardrop behind all elements ──
+  // Spans from head (y≈15) to below root (y≈570), widest at Sacral/G level
+  parts.push(`<path d="M 300,15 C 350,15 385,65 395,115 C 408,170 418,230 422,285 C 428,335 432,382 428,420 C 422,465 402,510 370,538 C 348,556 326,566 300,566 C 274,566 252,556 230,538 C 198,510 178,465 172,420 C 168,382 172,335 178,285 C 182,230 192,170 205,115 C 215,65 250,15 300,15 Z" fill="#e8d5c0" opacity="0.3"/>`);
 
   // ── Channels (draw first, under gates and centers) ──
   // Potential channels (all defined channel paths as dashed gray)
@@ -195,5 +193,5 @@ export function renderToSVG(chartData: ChartData): string {
     parts.push(renderGatePill(gp.gate, gp.x, gp.y, coloring));
   }
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">\n${parts.join('\n')}\n</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="100%" style="max-width:${width}px;height:auto;display:block;">\n${parts.join('\n')}\n</svg>`;
 }
