@@ -1,6 +1,6 @@
 {
   "name": "@gonzih/hd-bodygraph",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Human Design bodygraph SVG renderer with autonomous visual refinement loop",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
