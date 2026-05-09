@@ -80,7 +80,7 @@ export interface Point {
 
 export interface CenterShape {
   name: CenterName;
-  type: 'diamond' | 'triangle' | 'rectangle' | 'square' | 'pointed-diamond';
+  type: 'diamond' | 'triangle' | 'rectangle' | 'square' | 'pointed-diamond' | 'ellipse';
   cx: number;
   cy: number;
   w: number;

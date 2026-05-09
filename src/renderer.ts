@@ -128,6 +128,11 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
       const b = cy + hh; // base y
       return `<path d="M ${cx},${t} C ${cx + hw * 0.65},${t} ${cx + hw},${cy - hh * 0.25} ${cx + hw},${cy + hh * 0.25} Q ${cx + hw * 0.55},${b} ${cx},${b} Q ${cx - hw * 0.55},${b} ${cx - hw},${cy + hh * 0.25} C ${cx - hw},${cy - hh * 0.25} ${cx - hw * 0.65},${t} ${cx},${t} Z" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
     }
+    case 'ellipse': {
+      const rx = w / 2;
+      const ry = h / 2;
+      return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    }
     case 'triangle': {
       const hw = w / 2;
       const hh = h / 2;
@@ -221,7 +226,7 @@ function renderChannel(path: string, active: boolean): string {
 
 const PLANETS: { key: keyof Activations; symbol: string }[] = [
   { key: 'sun',       symbol: '☉' },
-  { key: 'earth',     symbol: '⊕' },
+  { key: 'earth',     symbol: '♁' },
   { key: 'northNode', symbol: '☊' },
   { key: 'southNode', symbol: '☋' },
   { key: 'moon',      symbol: '☽' },
@@ -298,9 +303,9 @@ export function renderToSVG(chartData: ChartData): string {
   parts.push(`<rect width="${width}" height="${height}" fill="${COLORS.background}"/>`);
 
   // ── Body silhouette (centered at x=410, spans Head-to-Root)
-  // Narrower at neck/shoulders, wide at chest, narrower at waist, wider at hips
+  // Wide human-torso shape: narrow at neck, wide at chest/sacral, tapers at root
   parts.push(
-    `<path d="M 410,45 C 385,45 355,72 345,108 C 332,155 327,203 320,250 C 310,298 280,330 268,374 C 256,418 270,460 292,492 C 312,522 358,540 410,542 C 462,540 508,522 528,492 C 550,460 564,418 552,374 C 540,330 510,298 500,250 C 493,203 488,155 475,108 C 465,72 435,45 410,45 Z" fill="#f0e4d0" opacity="0.3"/>`
+    `<path d="M 410,20 C 380,20 340,52 330,93 C 320,133 310,173 300,230 C 290,286 250,318 245,367 C 240,415 265,463 290,496 C 315,528 350,552 410,560 C 470,552 505,528 530,496 C 555,463 580,415 575,367 C 570,318 530,286 520,230 C 510,173 500,133 490,93 C 480,52 440,20 410,20 Z" fill="#f0e0c8" opacity="0.28"/>`
   );
 
   // ── Multi-line spine background
