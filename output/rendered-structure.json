@@ -1,0 +1,428 @@
+{
+  "image_dims": {
+    "width_px": 820,
+    "height_px": 650
+  },
+  "centers": {
+    "Head": {
+      "cx_pct": 50,
+      "cy_pct": 8.5,
+      "w_pct": 8.5,
+      "h_pct": 9.2
+    },
+    "Ajna": {
+      "cx_pct": 50,
+      "cy_pct": 20.8,
+      "w_pct": 11,
+      "h_pct": 9.2
+    },
+    "Throat": {
+      "cx_pct": 50,
+      "cy_pct": 33.8,
+      "w_pct": 15.9,
+      "h_pct": 9.2
+    },
+    "G": {
+      "cx_pct": 50,
+      "cy_pct": 48.5,
+      "w_pct": 12.2,
+      "h_pct": 15.4
+    },
+    "Ego": {
+      "cx_pct": 64,
+      "cy_pct": 41.5,
+      "w_pct": 8.5,
+      "h_pct": 10.8
+    },
+    "Sacral": {
+      "cx_pct": 50,
+      "cy_pct": 66.2,
+      "w_pct": 15.9,
+      "h_pct": 10.8
+    },
+    "SolarPlexus": {
+      "cx_pct": 66.5,
+      "cy_pct": 61.5,
+      "w_pct": 11,
+      "h_pct": 13.8
+    },
+    "Spleen": {
+      "cx_pct": 33.5,
+      "cy_pct": 61.5,
+      "w_pct": 11,
+      "h_pct": 13.8
+    },
+    "Root": {
+      "cx_pct": 50,
+      "cy_pct": 80,
+      "w_pct": 12.2,
+      "h_pct": 7.7
+    }
+  },
+  "gate_badges": {
+    "1": {
+      "cx_pct": 50,
+      "cy_pct": 39.7,
+      "coloring": "personality"
+    },
+    "2": {
+      "cx_pct": 47.8,
+      "cy_pct": 47.7,
+      "coloring": "inactive"
+    },
+    "3": {
+      "cx_pct": 55.1,
+      "cy_pct": 63.8,
+      "coloring": "inactive"
+    },
+    "4": {
+      "cx_pct": 52.2,
+      "cy_pct": 17.2,
+      "coloring": "personality"
+    },
+    "5": {
+      "cx_pct": 47,
+      "cy_pct": 57.7,
+      "coloring": "inactive"
+    },
+    "6": {
+      "cx_pct": 71,
+      "cy_pct": 63.5,
+      "coloring": "design"
+    },
+    "7": {
+      "cx_pct": 47.8,
+      "cy_pct": 39.7,
+      "coloring": "inactive"
+    },
+    "8": {
+      "cx_pct": 47,
+      "cy_pct": 32.8,
+      "coloring": "inactive"
+    },
+    "9": {
+      "cx_pct": 53,
+      "cy_pct": 63.8,
+      "coloring": "personality"
+    },
+    "10": {
+      "cx_pct": 40.9,
+      "cy_pct": 51.5,
+      "coloring": "both"
+    },
+    "12": {
+      "cx_pct": 53,
+      "cy_pct": 30,
+      "coloring": "inactive"
+    },
+    "13": {
+      "cx_pct": 52.2,
+      "cy_pct": 39.7,
+      "coloring": "inactive"
+    },
+    "14": {
+      "cx_pct": 50,
+      "cy_pct": 57.7,
+      "coloring": "inactive"
+    },
+    "15": {
+      "cx_pct": 52.2,
+      "cy_pct": 47.7,
+      "coloring": "inactive"
+    },
+    "16": {
+      "cx_pct": 55.1,
+      "cy_pct": 32.8,
+      "coloring": "personality"
+    },
+    "17": {
+      "cx_pct": 47,
+      "cy_pct": 24.9,
+      "coloring": "inactive"
+    },
+    "18": {
+      "cx_pct": 29,
+      "cy_pct": 70.5,
+      "coloring": "design"
+    },
+    "19": {
+      "cx_pct": 53.2,
+      "cy_pct": 78.2,
+      "coloring": "inactive"
+    },
+    "20": {
+      "cx_pct": 53,
+      "cy_pct": 32.8,
+      "coloring": "inactive"
+    },
+    "21": {
+      "cx_pct": 58.3,
+      "cy_pct": 44.3,
+      "coloring": "inactive"
+    },
+    "22": {
+      "cx_pct": 71,
+      "cy_pct": 58.9,
+      "coloring": "inactive"
+    },
+    "23": {
+      "cx_pct": 53,
+      "cy_pct": 24.9,
+      "coloring": "inactive"
+    },
+    "24": {
+      "cx_pct": 50,
+      "cy_pct": 17.2,
+      "coloring": "inactive"
+    },
+    "25": {
+      "cx_pct": 40.2,
+      "cy_pct": 54.3,
+      "coloring": "inactive"
+    },
+    "26": {
+      "cx_pct": 58.3,
+      "cy_pct": 38.2,
+      "coloring": "personality"
+    },
+    "27": {
+      "cx_pct": 47,
+      "cy_pct": 63.8,
+      "coloring": "inactive"
+    },
+    "28": {
+      "cx_pct": 29,
+      "cy_pct": 68.2,
+      "coloring": "inactive"
+    },
+    "29": {
+      "cx_pct": 53,
+      "cy_pct": 57.7,
+      "coloring": "design"
+    },
+    "30": {
+      "cx_pct": 71,
+      "cy_pct": 68.2,
+      "coloring": "design"
+    },
+    "31": {
+      "cx_pct": 44.9,
+      "cy_pct": 32.8,
+      "coloring": "inactive"
+    },
+    "32": {
+      "cx_pct": 29,
+      "cy_pct": 65.8,
+      "coloring": "inactive"
+    },
+    "33": {
+      "cx_pct": 50,
+      "cy_pct": 32.8,
+      "coloring": "inactive"
+    },
+    "34": {
+      "cx_pct": 44.9,
+      "cy_pct": 63.8,
+      "coloring": "inactive"
+    },
+    "35": {
+      "cx_pct": 50,
+      "cy_pct": 30,
+      "coloring": "inactive"
+    },
+    "36": {
+      "cx_pct": 71,
+      "cy_pct": 56.6,
+      "coloring": "inactive"
+    },
+    "37": {
+      "cx_pct": 71,
+      "cy_pct": 61.2,
+      "coloring": "design"
+    },
+    "38": {
+      "cx_pct": 47.3,
+      "cy_pct": 78.2,
+      "coloring": "both"
+    },
+    "39": {
+      "cx_pct": 55.1,
+      "cy_pct": 78.2,
+      "coloring": "inactive"
+    },
+    "40": {
+      "cx_pct": 61,
+      "cy_pct": 49.5,
+      "coloring": "design"
+    },
+    "41": {
+      "cx_pct": 50,
+      "cy_pct": 85.4,
+      "coloring": "inactive"
+    },
+    "42": {
+      "cx_pct": 46.3,
+      "cy_pct": 68.2,
+      "coloring": "inactive"
+    },
+    "43": {
+      "cx_pct": 50,
+      "cy_pct": 24.9,
+      "coloring": "inactive"
+    },
+    "44": {
+      "cx_pct": 29,
+      "cy_pct": 61.2,
+      "coloring": "design"
+    },
+    "45": {
+      "cx_pct": 55.1,
+      "cy_pct": 30,
+      "coloring": "inactive"
+    },
+    "46": {
+      "cx_pct": 50,
+      "cy_pct": 47.7,
+      "coloring": "inactive"
+    },
+    "47": {
+      "cx_pct": 47.8,
+      "cy_pct": 17.2,
+      "coloring": "design"
+    },
+    "48": {
+      "cx_pct": 29,
+      "cy_pct": 56.6,
+      "coloring": "inactive"
+    },
+    "49": {
+      "cx_pct": 71,
+      "cy_pct": 65.8,
+      "coloring": "personality"
+    },
+    "50": {
+      "cx_pct": 29,
+      "cy_pct": 63.5,
+      "coloring": "inactive"
+    },
+    "51": {
+      "cx_pct": 58.3,
+      "cy_pct": 41.2,
+      "coloring": "inactive"
+    },
+    "52": {
+      "cx_pct": 50,
+      "cy_pct": 78.2,
+      "coloring": "both"
+    },
+    "53": {
+      "cx_pct": 50,
+      "cy_pct": 68.2,
+      "coloring": "inactive"
+    },
+    "54": {
+      "cx_pct": 49.3,
+      "cy_pct": 78.2,
+      "coloring": "inactive"
+    },
+    "55": {
+      "cx_pct": 71,
+      "cy_pct": 70.5,
+      "coloring": "inactive"
+    },
+    "56": {
+      "cx_pct": 47,
+      "cy_pct": 30,
+      "coloring": "inactive"
+    },
+    "57": {
+      "cx_pct": 29,
+      "cy_pct": 58.9,
+      "coloring": "design"
+    },
+    "58": {
+      "cx_pct": 45.4,
+      "cy_pct": 78.2,
+      "coloring": "design"
+    },
+    "59": {
+      "cx_pct": 50,
+      "cy_pct": 63.8,
+      "coloring": "inactive"
+    },
+    "60": {
+      "cx_pct": 53.7,
+      "cy_pct": 68.2,
+      "coloring": "inactive"
+    },
+    "61": {
+      "cx_pct": 50,
+      "cy_pct": 13.5,
+      "coloring": "personality"
+    },
+    "62": {
+      "cx_pct": 44.9,
+      "cy_pct": 30,
+      "coloring": "inactive"
+    },
+    "63": {
+      "cx_pct": 52.2,
+      "cy_pct": 13.5,
+      "coloring": "inactive"
+    },
+    "64": {
+      "cx_pct": 47.8,
+      "cy_pct": 13.5,
+      "coloring": "inactive"
+    }
+  },
+  "spine": {
+    "line_count": 7,
+    "lines": [
+      {
+        "index": 1,
+        "x_pct": 48.5
+      },
+      {
+        "index": 2,
+        "x_pct": 49
+      },
+      {
+        "index": 3,
+        "x_pct": 49.5
+      },
+      {
+        "index": 4,
+        "x_pct": 50
+      },
+      {
+        "index": 5,
+        "x_pct": 50.5
+      },
+      {
+        "index": 6,
+        "x_pct": 51
+      },
+      {
+        "index": 7,
+        "x_pct": 51.5
+      }
+    ],
+    "x_start_pct": 48.5,
+    "x_end_pct": 51.5
+  },
+  "activation_columns": {
+    "design": {
+      "present": true,
+      "x_pct": 4.9,
+      "width_pct": 6.3,
+      "cx_pct": 8
+    },
+    "personality": {
+      "present": true,
+      "x_pct": 87.8,
+      "width_pct": 8.5,
+      "cx_pct": 92.1
+    }
+  }
+}

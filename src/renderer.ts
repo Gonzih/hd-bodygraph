@@ -105,7 +105,7 @@ function renderSpine(): string {
   for (let i = 0; i < numLines; i++) {
     const x = startX + i * spacing;
     lines.push(
-      `<line x1="${x}" y1="${top}" x2="${x}" y2="${bottom}" stroke="#3d2b1a" stroke-width="2" opacity="0.6"/>`
+      `<line data-spine-line="${i + 1}" x1="${x}" y1="${top}" x2="${x}" y2="${bottom}" stroke="${COLORS.spineBackground}" stroke-width="1.5" opacity="${COLORS.spineOpacity}"/>`
     );
   }
   return `<g id="spine-bg">${lines.join('')}</g>`;
@@ -198,7 +198,7 @@ function renderGatePill(gate: number, x: number, y: number, coloring: GateColori
       textFill = COLORS.inactiveText;
   }
 
-  return `<g>
+  return `<g data-gate="${gate}" data-coloring="${coloring}">
     <rect x="${x - pw / 2}" y="${y - ph / 2}" width="${pw}" height="${ph}" rx="${rx}" fill="${fill}" stroke="${COLORS.pillStroke}" stroke-width="0.8" stroke-opacity="${coloring === 'inactive' ? '0.4' : '1'}"/>
     <text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="${textFill}">${gate}</text>
   </g>`;
@@ -243,11 +243,12 @@ function renderActivationColumns(activations: ChartData['activations']): string 
   const totalH = (PLANETS.length - 1) * rowH;
   const startY = Math.round((55 + 545) / 2 - totalH / 2); // ≈ 143
 
-  const parts: string[] = [];
+  const designParts: string[] = [];
+  const persParts: string[] = [];
 
   // ── DESIGN column (left) ─────────────────────────────
   const designCX = 65;
-  parts.push(`<text x="${designCX}" y="${startY - 18}" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" letter-spacing="1" fill="${COLORS.designText}">DESIGN</text>`);
+  designParts.push(`<text x="${designCX}" y="${startY - 18}" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" letter-spacing="1" fill="${COLORS.designText}">DESIGN</text>`);
 
   for (let i = 0; i < PLANETS.length; i++) {
     const { key, symbol } = PLANETS[i];
@@ -255,29 +256,35 @@ function renderActivationColumns(activations: ChartData['activations']): string 
     if (!value) continue;
     const y = startY + i * rowH;
     // symbol left-side, value right-side, both centred on designCX
-    parts.push(`<text x="${designCX - 18}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="serif" font-size="14" fill="${COLORS.designText}">${symbol}</text>`);
-    parts.push(`<text x="${designCX + 16}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" fill="${COLORS.designText}">${value}</text>`);
+    designParts.push(`<text x="${designCX - 18}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="serif" font-size="14" fill="${COLORS.designText}">${symbol}</text>`);
+    designParts.push(`<text x="${designCX + 16}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" fill="${COLORS.designText}">${value}</text>`);
   }
 
   // ── PERSONALITY column (right) ───────────────────────
   const persCX = 755;
-  parts.push(`<text x="${persCX}" y="${startY - 18}" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="bold" letter-spacing="0.5" fill="${COLORS.personalityText}">PERSONALITY</text>`);
+  persParts.push(`<text x="${persCX}" y="${startY - 18}" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="bold" letter-spacing="0.5" fill="${COLORS.personalityText}">PERSONALITY</text>`);
 
   for (let i = 0; i < PLANETS.length; i++) {
     const { key, symbol } = PLANETS[i];
     const value = activations.personality[key];
     if (!value) continue;
     const y = startY + i * rowH;
-    parts.push(`<text x="${persCX - 18}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="serif" font-size="14" fill="${COLORS.personalityText}">${symbol}</text>`);
-    parts.push(`<text x="${persCX + 16}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" fill="${COLORS.personalityText}">${value}</text>`);
+    persParts.push(`<text x="${persCX - 18}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="serif" font-size="14" fill="${COLORS.personalityText}">${symbol}</text>`);
+    persParts.push(`<text x="${persCX + 16}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="11" fill="${COLORS.personalityText}">${value}</text>`);
   }
 
   // Vertical separator lines between columns and bodygraph
   const sepH = VIEWBOX.height - 30;
-  parts.push(`<line x1="130" y1="40" x2="130" y2="${sepH}" stroke="#c8a882" stroke-width="0.8" opacity="0.5"/>`);
-  parts.push(`<line x1="690" y1="40" x2="690" y2="${sepH}" stroke="#c8a882" stroke-width="0.8" opacity="0.5"/>`);
+  const sepLines = [
+    `<line x1="130" y1="40" x2="130" y2="${sepH}" stroke="#c8a882" stroke-width="0.8" opacity="0.5"/>`,
+    `<line x1="690" y1="40" x2="690" y2="${sepH}" stroke="#c8a882" stroke-width="0.8" opacity="0.5"/>`,
+  ];
 
-  return `<g id="activation-columns">${parts.join('\n')}</g>`;
+  return `<g id="activation-columns">` +
+    `<g data-column="design">${designParts.join('\n')}</g>` +
+    `<g data-column="personality">${persParts.join('\n')}</g>` +
+    sepLines.join('') +
+    `</g>`;
 }
 
 // ─── MAIN SVG RENDERER ─────────────────────────────────────────────────────────
@@ -309,8 +316,7 @@ export function renderToSVG(chartData: ChartData): string {
   // ── Centers (drawn over spine and channels)
   for (const shape of CENTER_SHAPES) {
     const defined = isCenterDefined(shape.name, chart);
-    parts.push(renderCenter(shape, defined));
-    parts.push(centerLabel(shape));
+    parts.push(`<g data-center="${shape.name}">${renderCenter(shape, defined)}${centerLabel(shape)}</g>`);
   }
 
   // ── Gate pills (deduplicated by gate number)
