@@ -1,30 +1,28 @@
-# PLAN: Precision Structural Comparison Pipeline
+# PLAN: Complete Geometry Rebuild — Correct Center Shapes
 
 ## Task Restatement
-Replace impression-based vision comparison with an exact number-to-number diff pipeline:
-1. Extract reference image structure → JSON (one-time, via Claude vision)
-2. Extract rendered SVG structure → JSON (every iteration, via Puppeteer DOM getBoundingClientRect)
-3. Diff the two JSONs → exact % deltas per element
-4. Apply surgical patches to geometry.ts based on exact deltas
+Completely rebuild the HD bodygraph geometry with correct canonical center shapes:
+- HEAD: triangle pointing UP (▲) — was `pointed-diamond`
+- AJNA: diamond (rotated square) — was `triangle` pointing wrong direction
+- THROAT: rectangle (unchanged)
+- G CENTER: diamond (unchanged)
+- EGO/HEART: small diamond — was `square`
+- SACRAL: rectangle (unchanged)
+- SOLAR PLEXUS: triangle pointing LEFT (◁) — was `square`
+- SPLEEN: triangle pointing RIGHT (▷) — was `square`
+- ROOT: rectangle (unchanged)
 
-## Approach (chosen)
-- Add data-* attributes to renderer.ts SVG elements (foundation for DOM extraction)
-- scripts/extract-reference.js: Claude vision → reference-structure.json (one-time)
-- scripts/extract-rendered.js: Puppeteer DOM → rendered-structure.json (per iteration)
-- scripts/diff-structures.js: exact % diff → structural-diff.json with fix suggestions
-- scripts/apply-fixes.js: updated to parse structural-diff.json deltas → patch geometry.ts
-- scripts/refine-loop.sh: updated to orchestrate precision loop
+Also: update viewBox to 820×900, update center positions/sizes per spec, rebuild gate positions, rebuild channel paths, update renderer to handle new shape types.
+
+## Approach
+Full rebuild of geometry.ts + shape renderer cases in renderer.ts. Update types.ts to add new shape type strings.
 
 ## Files to Touch
-- reference/test-chart.json (new)
-- src/renderer.ts — add data-* attributes
-- scripts/extract-reference.js (new)
-- scripts/extract-rendered.js (new)
-- scripts/diff-structures.js (new)
-- scripts/apply-fixes.js — extend for structural-diff.json
-- scripts/refine-loop.sh — precision loop
+- src/types.ts — add `triangle-up | triangle-left | triangle-right`, remove `pointed-diamond | square`
+- src/geometry.ts — complete rewrite: VIEWBOX(820×900), CENTER_SHAPES, GATE_POSITIONS, CHANNEL_PATHS
+- src/renderer.ts — add shape renderers for new types, update spine (6 lines), update body silhouette
 
 ## Risks
-- Puppeteer needs Chrome installed
-- Reference image may not exist — handle gracefully
-- node_modules not installed — npm install needed
+- Existing consumers of CenterShape type may use `square` or `pointed-diamond` — safe since we're breaking API is in the types
+- Channel paths are bezier arcs computed from gate positions — may need visual tuning
+- Gate positions in the spec may have gate 53 listed twice (SACRAL and ROOT) — handled by deduplication
