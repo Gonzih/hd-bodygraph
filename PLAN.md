@@ -1,71 +1,43 @@
-# PLAN: @gonzih/hd-bodygraph
+# PLAN: HD Bodygraph v1.1 Structural Rebuild
 
 ## Task Restatement
-Build an npm library that renders Human Design bodygraphs as SVG. The library must:
-1. Export `renderToSVG(chartData)` returning valid SVG string
-2. Export a React `<BodyGraph chart={chartData} />` component
-3. Include an autonomous visual refinement loop using Puppeteer + Claude vision
-4. Match the canonical Jovian Archive standard for HD bodygraph rendering
-5. Be published as `@gonzih/hd-bodygraph` on npm
+Add the three major visual features missing from the canonical HD bodygraph:
+1. Multi-line spine (7 parallel background lines through the central column)
+2. Design/Personality planetary activation columns flanking the chart
+3. Widen viewBox to 820×800 to fit activation columns (center bodygraph at x=410)
 
-## Approaches Considered
+Plus: accept flexible input (string channels, personalityGates/designGates/bothGates arrays, 'Solar Plexus' with space).
 
-### Approach A: Pure geometry from scratch (chosen)
-- Build all center positions, gate coordinates, and channel bezier paths from the spec
-- No external dependencies for geometry data
-- Full control over rendering quality
-- Trade-off: more initial work, but result is clean and maintainable
+## Current State
+- v1.0.1 already has centers, gates inside centers, body silhouette, channel arcs
+- Gates are well-positioned with correct coloring (design/personality/both)
+- Bodygraph center is at x=300, viewBox 600×820 — too narrow for activation columns
+- Score 8/10 with minor issues only (ROOT label overlap, dashed channel through Ajna)
 
-### Approach B: Wrap an existing library
-- Look for existing HD bodygraph npm packages and wrap them
-- Trade-off: faster if good library exists; but most are incomplete or proprietary
-- Research shows no quality open-source npm library for this
+## Approach
 
-### Approach C: Generate from a template SVG
-- Take a reference SVG and parameterize it
-- Trade-off: fragile, hard to update gate activation state dynamically
+### Approach A (chosen): Incremental coordinate shift + additive features
+- Shift all x coordinates by +110 (center 300→410) in geometry.ts
+- Add renderSpine() in renderer.ts for background multi-line spine
+- Add renderActivationColumns() in renderer.ts
+- Update types.ts for flexible input + Activations interface
+- Update body silhouette path coordinates
+- **Trade-off**: Minimal risk, preserves existing quality
 
-**Chosen: Approach A** — spec-driven from the provided geometry data. The prompt supplies exact coordinates for all 64 gates and 9 centers, which is sufficient to build from scratch.
+### Approach B: Full coordinate redesign
+- Redesign all center positions from scratch with larger sizes
+- **Trade-off**: Higher risk of breaking what works; not needed given current quality
 
-## Architecture
-
-```
-src/
-  types.ts       — ChartData, CenterName, GateColoring, ChannelPath types
-  geometry.ts    — CENTER_POSITIONS, GATE_POSITIONS, CHANNEL_PATHS constants
-  renderer.ts    — SVG generation: centers, gates, channels, coloring logic
-  index.ts       — exports renderToSVG, BodyGraph React component
-  react/
-    BodyGraph.tsx — React component (renders SVG in div)
-scripts/
-  render-png.js   — Puppeteer: renders SVG to PNG at output/current.png
-  compare.js      — Claude vision: score render vs reference standard
-  apply-fixes.js  — Parse comparison.json and patch geometry.ts coordinates
-  refine-loop.sh  — Orchestrate: build → render → compare → fix → repeat
-reference/
-  target.png      — Reference HD bodygraph image
-output/
-  current.png     — Latest rendered PNG
-  comparison.json — Latest vision comparison result
-```
+### Approach C: Separate SVG fragments
+- Keep current SVG, compose activation columns as separate panels
+- **Trade-off**: Fragile layout, scaling issues
 
 ## Files to Touch
-- `package.json` — project config, scripts, exports
-- `tsconfig.json` — TypeScript config
-- `src/types.ts`
-- `src/geometry.ts`
-- `src/renderer.ts`
-- `src/index.ts`
-- `src/react/BodyGraph.tsx`
-- `scripts/render-png.js`
-- `scripts/compare.js`
-- `scripts/apply-fixes.js`
-- `scripts/refine-loop.sh`
-- `research/findings.md`
+- `src/types.ts` — Add Activations interface, expand ChartData
+- `src/geometry.ts` — VIEWBOX 820×800, +110 x-shift, add spine y-ranges
+- `src/renderer.ts` — renderSpine(), renderActivationColumns(), input normalization
 
 ## Risks & Unknowns
-1. Reference image download may fail — will fall back to text-based comparison standard
-2. Puppeteer install can be slow — pin version, use --no-sandbox
-3. Claude vision scores may be inconsistent — use average of 2 runs if needed
-4. Gate coordinate precision — use the spec coordinates as baseline, refinement loop corrects
-5. npm publish requires auth — user must be logged into npm as @gonzih
+1. The +110 x-shift may push some gate pills or arc endpoints out of bounds — need to verify
+2. Unicode planet symbols may not render in all SVG environments — use text abbreviations as fallback
+3. Activation column row count (13 planets) × row height must fit within chart y-range
