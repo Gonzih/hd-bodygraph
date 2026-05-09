@@ -1,0 +1,43 @@
+{
+  "type": "Generator",
+  "profile": "2/4",
+  "definition": "Single Definition",
+  "authority": "Emotional",
+  "definedCenters": ["Ego", "G", "Root", "Sacral", "Solar Plexus", "Spleen"],
+  "channels": ["10-57", "18-58", "26-44", "37-40", "9-52"],
+  "personalityGates": [9, 16, 49, 4, 26, 61, 1],
+  "designGates": [40, 37, 30, 29, 6, 18, 57, 47, 58, 44],
+  "bothGates": [52, 38, 10],
+  "activations": {
+    "design": {
+      "sun": "40.4",
+      "earth": "37.4",
+      "northNode": "30.2",
+      "southNode": "29.2",
+      "moon": "6.2",
+      "mercury": "18.3",
+      "venus": "57.3",
+      "mars": "47.2",
+      "jupiter": "52.3",
+      "saturn": "58.4",
+      "uranus": "10.4",
+      "neptune": "38.1",
+      "pluto": "44.6"
+    },
+    "personality": {
+      "sun": "9.2",
+      "earth": "16.2",
+      "northNode": "49.1",
+      "southNode": "4.1",
+      "moon": "26.2",
+      "mercury": "26.1",
+      "venus": "61.2",
+      "mars": "1.5",
+      "jupiter": "52.6",
+      "saturn": "38.3",
+      "uranus": "10.6",
+      "neptune": "38.2",
+      "pluto": "1.3"
+    }
+  }
+}
