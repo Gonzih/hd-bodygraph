@@ -12,7 +12,7 @@ export const SPINE_Y = { top: 25, bottom: 545 };
 // All cx values shifted +110 from previous layout (bodygraph center 300→410)
 
 export const CENTER_SHAPES: CenterShape[] = [
-  { name: 'Head',        type: 'pointed-diamond', cx: 410, cy: 55,  w: 70,  h: 60  },
+  { name: 'Head',        type: 'ellipse',          cx: 410, cy: 60,  w: 90,  h: 104 },
   { name: 'Ajna',        type: 'triangle',         cx: 410, cy: 135, w: 90,  h: 60  },
   { name: 'Throat',      type: 'rectangle',        cx: 410, cy: 220, w: 130, h: 60  },
   { name: 'G',           type: 'diamond',          cx: 410, cy: 315, w: 100, h: 100 },
@@ -89,7 +89,7 @@ export const GATE_POSITIONS: GatePosition[] = [
   { gate: 54, x: 404, y: 508 },
   { gate: 19, x: 436, y: 508 },
   { gate: 39, x: 452, y: 508 },
-  { gate: 41, x: 410, y: 555 },
+  { gate: 41, x: 410, y: 525 },
 
   // Root center gate (and Sacral-Root spine gate)
   { gate: 52, x: 410, y: 508 },
@@ -193,25 +193,25 @@ export const CHANNEL_PATHS: ChannelPath[] = [
     gates: [54, 32],
     path: 'M 262,428 C 220,455 223,506 404,506',
   },
-  // ── 10-57 (G↔Spleen) — arc far left
+  // ── 10-57 (G↔Spleen) — arc far left (extends to x≈155)
   {
     gates: [10, 57],
-    path: 'M 335,335 C 295,320 208,330 238,383',
+    path: 'M 335,335 C 280,310 155,338 238,383',
   },
-  // ── 18-58 (Spleen↔Root) — sweep left and down
+  // ── 18-58 (Spleen↔Root) — sweep far left and down (extends to x≈155)
   {
     gates: [18, 58],
-    path: 'M 238,458 C 182,478 188,510 372,510',
+    path: 'M 238,458 C 155,478 158,510 372,510',
   },
   // ── 26-44 (Ego↔Spleen) — massive outer arc sweeping far right then left
   {
     gates: [26, 44],
     path: 'M 478,248 C 625,185 678,375 625,455 C 585,510 490,515 390,505 C 320,495 268,465 238,398',
   },
-  // ── 37-40 (SolarPlexus↔Ego) — right-side arc
+  // ── 37-40 (SolarPlexus↔Ego) — right-side arc (extends to x≈665)
   {
     gates: [37, 40],
-    path: 'M 582,398 C 658,375 655,305 500,322',
+    path: 'M 582,398 C 665,378 665,305 500,322',
   },
   // ── 9-52 (Sacral↔Root) — slightly right of center spine
   {
