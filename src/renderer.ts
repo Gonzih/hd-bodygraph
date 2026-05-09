@@ -147,26 +147,25 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
 }
 
 function centerLabel(shape: CenterShape): string {
+  const { cx, cy } = shape;
+  const stroke = COLORS.centerStroke;
+  const font = `font-family="Arial,sans-serif" font-weight="bold" fill="${stroke}" opacity="0.85"`;
+
+  // SolarPlexus: two-line tspan
+  if (shape.name === 'SolarPlexus') {
+    return `<text text-anchor="middle" ${font} font-size="9"><tspan x="${cx}" y="${cy - 5}">SOLAR</tspan><tspan x="${cx}" dy="11">PLEXUS</tspan></text>`;
+  }
+
   const labels: Record<string, string> = {
-    Head: 'HEAD',
-    Ajna: 'AJNA',
-    Throat: 'THROAT',
-    G: 'G',
-    Ego: 'EGO',
-    Sacral: 'SACRAL',
-    SolarPlexus: 'SP',
-    Spleen: 'SPLN',
-    Root: 'ROOT',
+    Head: 'HEAD', Ajna: 'AJNA', Throat: 'THROAT', G: 'G',
+    Ego: 'EGO', Sacral: 'SACRAL', Spleen: 'SPLEEN', Root: 'ROOT',
   };
   const labelYOffset: Record<string, number> = {
-    Sacral: 28,
-    Root: 7,
-    Throat: 18,
-    G: 8,
+    Sacral: 28, Root: 7, Throat: 18, G: 8,
   };
   const label = labels[shape.name] ?? shape.name;
   const yOff = labelYOffset[shape.name] ?? 4;
-  return `<text x="${shape.cx}" y="${shape.cy + yOff}" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="${COLORS.centerStroke}" opacity="0.85">${label}</text>`;
+  return `<text x="${cx}" y="${cy + yOff}" text-anchor="middle" dominant-baseline="middle" ${font} font-size="10">${label}</text>`;
 }
 
 // ─── GATE PILL RENDERER ────────────────────────────────────────────────────────

@@ -28,23 +28,23 @@
 <path d="M 435,415 L 435,510" fill="none" stroke="#3a2810" stroke-width="9" stroke-opacity="0.18" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M 435,415 L 435,510" fill="none" stroke="#3a2810" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 <polygon points="410,25 445,64 410,85 375,64" fill="#ede0cc" stroke="#5a3e28" stroke-width="2.5"/>
-<text x="410" y="59" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">HEAD</text>
+<text x="410" y="59" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">HEAD</text>
 <polygon points="365,105 455,105 410,165" fill="#ede0cc" stroke="#5a3e28" stroke-width="2.5"/>
-<text x="410" y="139" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">AJNA</text>
+<text x="410" y="139" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">AJNA</text>
 <rect x="345" y="190" width="130" height="60" fill="#ede0cc" stroke="#5a3e28" stroke-width="2.5" rx="4"/>
-<text x="410" y="238" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">THROAT</text>
+<text x="410" y="238" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">THROAT</text>
 <polygon points="410,265 460,315 410,365 360,315" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5"/>
-<text x="410" y="323" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">G</text>
+<text x="410" y="323" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">G</text>
 <rect x="490" y="235" width="70" height="70" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5" rx="3"/>
-<text x="525" y="274" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">EGO</text>
+<text x="525" y="274" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">EGO</text>
 <rect x="345" y="395" width="130" height="70" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5" rx="4"/>
-<text x="410" y="458" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">SACRAL</text>
+<text x="410" y="458" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">SACRAL</text>
 <rect x="500" y="355" width="90" height="90" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5" rx="3"/>
-<text x="545" y="404" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">SP</text>
+<text text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="9"><tspan x="545" y="395">SOLAR</tspan><tspan x="545" dy="11">PLEXUS</tspan></text>
 <rect x="230" y="355" width="90" height="90" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5" rx="3"/>
-<text x="275" y="404" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">SPLN</text>
+<text x="275" y="404" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">SPLEEN</text>
 <rect x="360" y="495" width="100" height="50" fill="#c8a882" stroke="#5a3e28" stroke-width="2.5" rx="4"/>
-<text x="410" y="527" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#5a3e28" opacity="0.85">ROOT</text>
+<text x="410" y="527" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-weight="bold" fill="#5a3e28" opacity="0.85" font-size="10">ROOT</text>
 <g>
     <rect x="381" y="81" width="22" height="14" rx="7" fill="#e8d8c0" stroke="#3a2810" stroke-width="0.8" stroke-opacity="0.4"/>
     <text x="392" y="88" text-anchor="middle" dominant-baseline="central" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="#888888">64</text>
