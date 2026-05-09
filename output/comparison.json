@@ -1,0 +1,16 @@
+{
+  "scores": {
+    "centers": 8,
+    "gates": 8,
+    "channels": 8,
+    "overall": 8
+  },
+  "critical_issues": [
+    "ROOT label slightly obscured by gate 41 pill — minor",
+    "Dashed body outline visible through undefined Ajna center — acceptable"
+  ],
+  "specific_fixes": [
+    "Gate 41 at y=530 slightly overlaps ROOT label at y=538 — could shift gate 41 to y=542",
+    "Consider making inactive gate pill borders even lighter (stroke-opacity 0.4)"
+  ]
+}
