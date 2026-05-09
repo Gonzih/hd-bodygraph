@@ -126,7 +126,6 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
       return `<polygon points="${cx},${cy - hh} ${cx + hw},${cy + hh * 0.3} ${cx},${cy + hh} ${cx - hw},${cy + hh * 0.3}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
     }
     case 'triangle': {
-      // Ajna: downward-pointing triangle
       const hw = w / 2;
       const hh = h / 2;
       return `<polygon points="${cx - hw},${cy - hh} ${cx + hw},${cy - hh} ${cx},${cy + hh}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
@@ -135,7 +134,6 @@ function renderCenter(shape: CenterShape, defined: boolean): string {
       return `<rect x="${cx - w / 2}" y="${cy - h / 2}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="4"/>`;
     }
     case 'diamond': {
-      // G Center: rotated square (diamond)
       const hw = w / 2;
       const hh = h / 2;
       return `<polygon points="${cx},${cy - hh} ${cx + hw},${cy} ${cx},${cy + hh} ${cx - hw},${cy}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`;
@@ -163,6 +161,7 @@ function centerLabel(shape: CenterShape): string {
   const labelYOffset: Record<string, number> = {
     Sacral: 28, Root: 7, Throat: 18, G: 8,
   };
+
   const label = labels[shape.name] ?? shape.name;
   const yOff = labelYOffset[shape.name] ?? 4;
   return `<text x="${cx}" y="${cy + yOff}" text-anchor="middle" dominant-baseline="middle" ${font} font-size="10">${label}</text>`;
