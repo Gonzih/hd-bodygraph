@@ -96,10 +96,10 @@ function isChannelActive(gates: [number, number], chart: NormalizedChart): boole
 // Centers render on top, masking the interior; the lines appear between centers.
 
 function renderSpine(): string {
-  const numLines = 8;
+  const numLines = 7;
   const spacing = 4;
-  // Center 8 lines at x=410: startX = 410 - (numLines-1)/2 * spacing = 410 - 14 = 396
-  const startX = 410 - ((numLines - 1) / 2) * spacing; // 396
+  // Center 7 lines at x=410: startX = 410 - (numLines-1)/2 * spacing = 410 - 12 = 398
+  const startX = 410 - ((numLines - 1) / 2) * spacing; // 398
   const { top, bottom } = SPINE_Y;
   const lines: string[] = [];
   for (let i = 0; i < numLines; i++) {
