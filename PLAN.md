@@ -1,3 +1,5 @@
+# PLAN: Canonical Colors + BodyGraphOptions Customization (DONE)
+# (Previous plan preserved below)
 # PLAN: Complete Geometry Rebuild — Correct Center Shapes
 
 ## Task Restatement

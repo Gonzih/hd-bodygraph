@@ -97,3 +97,81 @@ export interface ChannelPath {
   gates: [number, number];
   path: string;
 }
+
+// ─── CUSTOMIZATION ─────────────────────────────────────────────────────────────
+
+/**
+ * Built-in visual theme presets.
+ *
+ * - `'default'`    — warm amber centers, dark brown channels (v1.3 style)
+ * - `'canonical'`  — per-center colors matching HD.OS reference image, circuitry channel colors
+ * - `'minimal'`    — outlines only, no center fills, thin grey channels
+ * - `'dark'`       — dark background, bright center fills
+ * - `'light'`      — white background, muted fills, subtle channels
+ */
+export type ThemePreset = 'default' | 'canonical' | 'minimal' | 'dark' | 'light';
+
+/**
+ * Full customization options for `renderToSVG`.
+ * All fields are optional — omit any field to use the theme/default value.
+ */
+export interface BodyGraphOptions {
+  /**
+   * Visual theme preset. Applied first; individual overrides take precedence.
+   * @default 'default'
+   */
+  theme?: ThemePreset;
+
+  /**
+   * Per-center fill colors (overrides theme).
+   * Key = CenterName, value = CSS color string.
+   * Only applies to defined (filled) centers; undefined centers are always outlined.
+   */
+  centerColors?: Partial<Record<CenterName, string>>;
+
+  /**
+   * Per-channel stroke colors (overrides theme).
+   * Key = canonical channel string e.g. `"10-57"` (lower gate first).
+   * Value = CSS color string.
+   */
+  channelColors?: Partial<Record<string, string>>;
+
+  /**
+   * Opacity for defined (filled) centers. 0–1.
+   * @default 1
+   */
+  definedOpacity?: number;
+
+  /**
+   * Opacity for undefined (outlined) centers. 0–1.
+   * @default 1
+   */
+  undefinedOpacity?: number;
+
+  /** Show gate number badges. @default true */
+  showGateNumbers?: boolean;
+
+  /** Show center name labels. @default true */
+  showCenterLabels?: boolean;
+
+  /** Show DESIGN and PERSONALITY planetary activation columns. @default true */
+  showActivationColumns?: boolean;
+
+  /** Show the human body silhouette behind the bodygraph. @default true */
+  showBodySilhouette?: boolean;
+
+  /** Show the multi-line spine. @default true */
+  showSpine?: boolean;
+
+  /**
+   * Number of parallel spine lines. 1–13.
+   * @default 7
+   */
+  spineLineCount?: number;
+
+  /**
+   * SVG max-width in pixels (sets the `style="max-width:Xpx"` attribute).
+   * @default 820
+   */
+  width?: number;
+}
