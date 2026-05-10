@@ -1,6 +1,6 @@
 {
   "name": "@gonzih/hd-bodygraph",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Human Design bodygraph SVG renderer with autonomous visual refinement loop",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -18,9 +18,12 @@
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --external react",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react",
+    "screenshot": "node scripts/screenshot.js",
+    "pixeldiff": "node scripts/pixeldiff.js",
+    "vision-compare": "node scripts/vision-compare.js",
+    "refine": "bash scripts/refine-loop.sh",
     "render-png": "node scripts/render-png.js",
     "compare": "node scripts/compare.js",
-    "refine": "bash scripts/refine-loop.sh",
     "apply-fixes": "node scripts/apply-fixes.js",
     "typecheck": "tsc --noEmit"
   },
@@ -38,11 +41,14 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "0.52.0",
     "@types/react": "18.3.23",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.59.1",
+    "pngjs": "^7.0.0",
     "puppeteer": "22.15.0",
     "tsup": "8.5.0",
     "typescript": "5.8.3"
   },
   "dependencies": {
-    "react": "18.3.1"
+    "react": ">=17.0.0"
   }
 }

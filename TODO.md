@@ -1,13 +1,13 @@
-# TODO: Precision Comparison Pipeline
+# TODO: Pixelmatch Pixel-Level Refinement Loop
 
-- [x] Create feat/precision-comparison-pipeline branch
 - [x] Write PLAN.md and TODO.md
-- [ ] Save reference/test-chart.json
-- [ ] Add data-* attributes to src/renderer.ts
-- [ ] Create scripts/extract-reference.js
-- [ ] Create scripts/extract-rendered.js
-- [ ] Create scripts/diff-structures.js
-- [ ] Update scripts/apply-fixes.js
-- [ ] Update scripts/refine-loop.sh
-- [ ] npm install + build + smoke test
-- [ ] Commit, push, PR, merge
+- [ ] Create git branch feat/pixelmatch-refinement-loop
+- [ ] Install pixelmatch, pngjs, playwright
+- [ ] Create scripts/screenshot.js (Playwright SVG renderer)
+- [ ] Create scripts/pixeldiff.js (pixelmatch diff)
+- [ ] Create scripts/vision-compare.js (3-image Claude vision)
+- [ ] Update scripts/apply-fixes.js (handle vision-compare JSON format)
+- [ ] Rewrite scripts/refine-loop.sh (pixel-diff pipeline)
+- [ ] Update package.json scripts
+- [ ] Build, smoke test, verify
+- [ ] Commit, push, PR, merge, publish

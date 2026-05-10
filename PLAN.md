@@ -3,28 +3,46 @@
 # PLAN: Complete Geometry Rebuild — Correct Center Shapes
 
 ## Task Restatement
-Completely rebuild the HD bodygraph geometry with correct canonical center shapes:
-- HEAD: triangle pointing UP (▲) — was `pointed-diamond`
-- AJNA: diamond (rotated square) — was `triangle` pointing wrong direction
-- THROAT: rectangle (unchanged)
-- G CENTER: diamond (unchanged)
-- EGO/HEART: small diamond — was `square`
-- SACRAL: rectangle (unchanged)
-- SOLAR PLEXUS: triangle pointing LEFT (◁) — was `square`
-- SPLEEN: triangle pointing RIGHT (▷) — was `square`
-- ROOT: rectangle (unchanged)
+Replace the existing DOM-extraction + percentage-comparison refinement loop with a pixel-level
+diff approach using pixelmatch. The new pipeline:
 
-Also: update viewBox to 820×900, update center positions/sizes per spec, rebuild gate positions, rebuild channel paths, update renderer to handle new shape types.
+  render SVG → Playwright screenshot → pixelmatch(current, reference) → diff.png
+  → Claude vision sees all 3 images → outputs JSON coordinate patches
+  → apply-fixes.js patches geometry.ts → rebuild → repeat
 
-## Approach
-Full rebuild of geometry.ts + shape renderer cases in renderer.ts. Update types.ts to add new shape type strings.
+The old approach (Puppeteer DOM extraction + SVG data- attributes + percentage comparison) is
+unreliable because SVG data-* attributes aren't reliably present and percentages are imprecise.
+
+## Approaches Considered
+
+### A) Keep Puppeteer, add pixelmatch
+Reuse existing render-png.js (Puppeteer) but add pixelmatch step.
+- Pro: Less to change
+- Con: Puppeteer is heavier, hardcoded 820x650 viewport, SVG scaling is unreliable
+
+### B) Switch to Playwright + pixelmatch (CHOSEN)
+Playwright is more reliable for SVG rendering (better CSS/layout engine), can screenshot
+individual SVG element with correct bounding box.
+- Pro: Accurate dimensions, modern API, better SVG support
+- Con: New dependency, need `npx playwright install chromium`
+
+### C) Server-side rendering (no browser)
+Use @resvg/resvg-js or sharp to render SVG to PNG.
+- Pro: No browser needed
+- Con: Requires native binaries, different rendering engine than browser (may not match)
+
+## Chosen Approach: B (Playwright + pixelmatch)
 
 ## Files to Touch
-- src/types.ts — add `triangle-up | triangle-left | triangle-right`, remove `pointed-diamond | square`
-- src/geometry.ts — complete rewrite: VIEWBOX(820×900), CENTER_SHAPES, GATE_POSITIONS, CHANNEL_PATHS
-- src/renderer.ts — add shape renderers for new types, update spine (6 lines), update body silhouette
+- scripts/screenshot.js — NEW: Playwright-based SVG renderer
+- scripts/pixeldiff.js — NEW: pixelmatch diff script
+- scripts/vision-compare.js — NEW: 3-image Claude vision (replaces compare.js)
+- scripts/apply-fixes.js — UPDATE: handle vision-compare.js JSON format
+- scripts/refine-loop.sh — REWRITE: pixel-diff pipeline
+- package.json — UPDATE: add new npm scripts, add devDependencies
 
 ## Risks
-- Existing consumers of CenterShape type may use `square` or `pointed-diamond` — safe since we're breaking API is in the types
-- Channel paths are bezier arcs computed from gate positions — may need visual tuning
-- Gate positions in the spec may have gate 53 listed twice (SACRAL and ROOT) — handled by deduplication
+- Playwright chromium install may require network; handle gracefully
+- If no reference/target.png exists, bootstrap by saving current render as reference
+- pixelmatch needs images to be same size; crop to min(w,h) if sizes differ
+- Claude vision JSON parse may fail; add error handling
