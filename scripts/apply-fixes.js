@@ -4,17 +4,20 @@
  * apply-fixes.js
  * Reads a diff file and applies coordinate fixes to src/geometry.ts.
  *
- * Supports two input formats:
+ * Supports three input formats:
  *   1. output/structural-diff.json (precision pipeline) — pass as first argument
  *      Parses diffs[].fix strings like:
  *        "shift gate 44: x+=-2.3% y+=1.1%"
  *        "adjust CENTER_Head cx by +3.50%"
- *   2. output/comparison.json (legacy vision pipeline) — used when no arg given
+ *   2. output/vision-comparison.json (pixelmatch vision pipeline)
+ *      Parses issues[].fix strings — same format as structural-diff
+ *   3. output/comparison.json (legacy vision pipeline) — used when no arg given
  *      Parses specific_fixes[] text strings.
  *
  * Usage:
- *   node scripts/apply-fixes.js output/structural-diff.json   # precision mode
- *   node scripts/apply-fixes.js                               # legacy mode
+ *   node scripts/apply-fixes.js output/structural-diff.json      # precision mode
+ *   node scripts/apply-fixes.js output/vision-comparison.json    # vision-compare mode
+ *   node scripts/apply-fixes.js                                  # legacy mode
  */
 
 const fs = require('fs');
@@ -239,12 +242,49 @@ function applyComparisonFixes() {
   }
 }
 
+// ─── Vision-compare pipeline: parse vision-comparison.json ───────────────────
+
+function applyVisionFixes(filePath) {
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (e) {
+    console.error(`Cannot read ${filePath}: ${e.message}`);
+    process.exit(1);
+  }
+
+  // Normalize issues[] to the same shape as diffs[]
+  const issues = data.issues || [];
+  if (issues.length === 0) {
+    console.log('No issues found in vision-comparison.json');
+    return;
+  }
+
+  // Convert to structural-diff format and reuse the same fix-apply logic
+  const normalized = {
+    diffs: issues.map((i) => ({
+      element: i.element,
+      issue: i.description,
+      fix: typeof i.fix === 'string' ? i.fix : null,
+      severity: 'minor', // all issues treated as fixable
+    })),
+  };
+
+  const tmpPath = 'output/_normalized-vision-fixes.json';
+  fs.writeFileSync(tmpPath, JSON.stringify(normalized, null, 2));
+  applyStructuralDiff(tmpPath);
+  fs.unlinkSync(tmpPath);
+}
+
 // ─── Entry point ──────────────────────────────────────────────────────────────
 
 const inputPath = process.argv[2];
 
-if (inputPath) {
-  // Precision mode: read the given file (structural-diff.json)
+if (inputPath && inputPath.includes('vision-comparison')) {
+  // Vision-compare mode: read issues[] from vision-comparison.json
+  applyVisionFixes(inputPath);
+} else if (inputPath) {
+  // Precision mode: read diffs[] from structural-diff.json
   applyStructuralDiff(inputPath);
 } else {
   // Legacy mode: read comparison.json

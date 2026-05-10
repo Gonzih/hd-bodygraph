@@ -1,97 +1,123 @@
 #!/bin/bash
+# refine-loop.sh — Pixel-level visual refinement loop
+#
+# Pipeline:
+#   render SVG → Playwright screenshot → pixelmatch diff → Claude vision (3 images) → apply-fixes → rebuild → repeat
+#
+# Stop when: pixel diff < 5%  OR  vision score >= 8  OR  max iterations reached
+#
+# Usage:
+#   bash scripts/refine-loop.sh
+#   ANTHROPIC_API_KEY=sk-... bash scripts/refine-loop.sh
+
 set -e
 
-MAX_ITERATIONS=8
+MAX_ITERATIONS=6
 ITERATION=0
 
-echo "=== HD Bodygraph Precision Refinement Loop ==="
-echo "Target score: 8/10 (structural match)"
+echo "=== HD Bodygraph Pixel-Diff Refinement Loop ==="
+echo "Stop conditions: pixel diff < 5%  OR  vision score >= 8  OR  $MAX_ITERATIONS iterations"
 echo ""
 
-# ── One-time: extract reference structure ─────────────────────────────────────
-if [ ! -f output/reference-structure.json ]; then
-  if [ -f reference/target.png ] || [ -f reference/target.jpg ] || [ -f reference/target.jpeg ]; then
-    echo "=== Extracting reference structure (one-time) ==="
-    node scripts/extract-reference.js
-    echo ""
-  else
-    echo "⚠ No reference image found in reference/ (target.png/jpg). Skipping reference extraction."
-    echo "  Structural diff will compare rendered output against itself — useful for DOM extraction smoke test."
-    echo "  Place reference/target.png for full comparison."
-    echo ""
-  fi
-fi
-
-# ── Initial build ─────────────────────────────────────────────────────────────
+# ── Initial build ──────────────────────────────────────────────────────────────
 echo "Building library..."
 npm run build
 echo ""
 
+# ── Bootstrap reference image if none exists ──────────────────────────────────
+if [ ! -f reference/target.png ]; then
+  echo "⚠  No reference/target.png found."
+  echo "   Generating a bootstrap reference from the current render."
+  echo "   Replace reference/target.png with a real reference image for meaningful comparisons."
+  echo ""
+  node scripts/screenshot.js output/current.png
+  cp output/current.png reference/target.png
+  echo "Bootstrap reference saved to reference/target.png"
+  echo ""
+fi
+
+# ── Refinement loop ───────────────────────────────────────────────────────────
 while [ $ITERATION -lt $MAX_ITERATIONS ]; do
   ITERATION=$((ITERATION + 1))
-  echo "=== Structural refinement iteration $ITERATION / $MAX_ITERATIONS ==="
+  echo "=== Iteration $ITERATION / $MAX_ITERATIONS ==="
 
-  # Render SVG from test chart
-  echo "Rendering SVG..."
-  node -e "
-const { renderToSVG } = require('./dist/index.js');
-const fs = require('fs');
-const chart = JSON.parse(fs.readFileSync('reference/test-chart.json', 'utf8'));
-fs.mkdirSync('output', { recursive: true });
-fs.writeFileSync('output/current.svg', renderToSVG(chart));
-console.log('SVG written to output/current.svg');
-"
+  # Render SVG → PNG via Playwright
+  echo "[1/4] Rendering SVG to PNG (Playwright)..."
+  node scripts/screenshot.js output/current.png
 
-  # Also render PNG for optional visual comparison
-  node scripts/render-png.js 2>/dev/null || echo "(PNG render skipped)"
+  # Pixel diff vs reference
+  echo "[2/4] Running pixelmatch diff..."
+  DIFF_EXIT=0
+  node scripts/pixeldiff.js output/current.png reference/target.png output/diff.png || DIFF_EXIT=$?
 
-  # Extract rendered structure via Puppeteer DOM
-  echo "Extracting rendered structure via DOM..."
-  node scripts/extract-rendered.js output/current.svg
+  DIFF_PCT=$(node -e "const d=require('./output/diff-stats.json'); console.log(d.diffPct);" 2>/dev/null || echo "100")
+  echo "      Pixel diff: ${DIFF_PCT}%"
 
-  # If no reference, copy rendered as reference for this run (smoke-test mode)
-  if [ ! -f output/reference-structure.json ]; then
-    cp output/rendered-structure.json output/reference-structure.json
-    echo "ℹ Using rendered structure as reference (smoke-test mode)"
-  fi
-
-  # Structural diff — exact numbers
-  echo "Running structural diff..."
-  if node scripts/diff-structures.js; then
+  # Check pixel diff threshold
+  BELOW_THRESHOLD=$(node -e "console.log(parseFloat('$DIFF_PCT') < 5 ? 'yes' : 'no')")
+  if [ "$BELOW_THRESHOLD" = "yes" ]; then
     echo ""
-    echo "✓ Score >= 8. Structural match achieved after $ITERATION iteration(s)!"
+    echo "✓ Pixel diff < 5%! Visual match achieved after $ITERATION iteration(s)."
     break
   fi
 
-  # Also run vision comparison for qualitative feedback (non-fatal)
-  if [ -f output/current.png ] && [ -n "$ANTHROPIC_API_KEY" ]; then
-    echo "Running vision comparison (supplementary)..."
-    node scripts/compare.js 2>/dev/null || true
-  fi
+  # Vision compare with 3 images (ref + current + diff)
+  if [ -n "$ANTHROPIC_API_KEY" ]; then
+    echo "[3/4] Running Claude vision comparison (3-image)..."
+    VISION_EXIT=0
+    node scripts/vision-compare.js || VISION_EXIT=$?
 
-  # Apply fixes based on structural diff
-  if [ $ITERATION -lt $MAX_ITERATIONS ]; then
-    echo "Applying structural fixes..."
-    node scripts/apply-fixes.js output/structural-diff.json
+    SCORE=$(node -e "const d=require('./output/vision-comparison.json'); console.log(d.score);" 2>/dev/null || echo "0")
+    echo "      Vision score: ${SCORE}/10"
 
-    echo "Rebuilding..."
-    npm run build
+    if [ "$VISION_EXIT" -eq 0 ]; then
+      echo ""
+      echo "✓ Vision score >= 8! Quality target achieved after $ITERATION iteration(s)."
+      break
+    fi
+
+    # Apply coordinate fixes from vision comparison
+    if [ $ITERATION -lt $MAX_ITERATIONS ]; then
+      echo "[4/4] Applying coordinate fixes..."
+      node scripts/apply-fixes.js output/vision-comparison.json || true
+
+      echo "      Rebuilding..."
+      npm run build
+    fi
+  else
+    echo "[3/4] ANTHROPIC_API_KEY not set — skipping vision comparison."
+    echo "      Set ANTHROPIC_API_KEY to enable Claude vision feedback."
+    echo "[4/4] (Skipped — no API key)"
   fi
 
   echo ""
 done
 
+# ── Final summary ──────────────────────────────────────────────────────────────
 echo ""
-echo "=== Final structural diff summary ==="
-if [ -f output/structural-diff.json ]; then
+echo "=== Final Summary ==="
+FINAL_DIFF=$(node -e "const d=require('./output/diff-stats.json'); console.log(d.diffPct+'%');" 2>/dev/null || echo "N/A")
+echo "Pixel diff: $FINAL_DIFF"
+
+if [ -f output/vision-comparison.json ]; then
   node -e "
-const d = JSON.parse(require('fs').readFileSync('output/structural-diff.json', 'utf8'));
-console.log('Score:', d.score + '/10', '| Critical:', d.critical_count, '| Minor:', d.minor_count);
-if (d.diffs && d.diffs.length > 0) {
-  const critical = d.diffs.filter(x => x.severity === 'critical');
-  const minor    = d.diffs.filter(x => x.severity === 'minor');
-  if (critical.length) { console.log('\\nCritical issues:'); critical.forEach(x => console.log(' -', x.element + ':', x.issue)); }
-  if (minor.length)    { console.log('\\nMinor issues:');   minor.forEach(x => console.log(' -', x.element + ':', x.issue)); }
+const d = require('./output/vision-comparison.json');
+console.log('Vision score:', d.score + '/10');
+console.log('Summary:', d.summary);
+if (d.critical_issues && d.critical_issues.length) {
+  console.log('Critical issues:');
+  d.critical_issues.forEach(i => console.log(' -', i));
 }
-"
+if (d.issues && d.issues.length) {
+  console.log('Remaining issues:', d.issues.length);
+  d.issues.forEach(i => console.log(' -', i.element + ':', i.description));
+}
+" 2>/dev/null || true
 fi
+
+echo ""
+echo "Output files:"
+echo "  output/current.png          — final render"
+echo "  output/diff.png             — pixel diff (red = wrong)"
+echo "  output/diff-stats.json      — diff statistics"
+echo "  output/vision-comparison.json — Claude vision analysis"
